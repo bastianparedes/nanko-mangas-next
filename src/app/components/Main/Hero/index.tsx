@@ -39,7 +39,7 @@ const Component = () => {
           </a>
         </div>
       </div>
-      <div className="flex justify-center items-center w-1/3 aspect-square lg:w-1/2 md:w-auto">
+      <div className="relative flex justify-center items-center w-1/3 aspect-square lg:w-1/2 md:w-auto">
         <Image
           alt="Product"
           className="object-cover w-full h-full"

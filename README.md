@@ -8,3 +8,5 @@ Variable | Optional
 phoneNumber | Yes
 email | Yes
 emailPassword | Depends on email
+dropboxAccessToken | No
+basePath | Yes

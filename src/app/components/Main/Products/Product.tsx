@@ -1,4 +1,7 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
+// import Image from 'next/image';
+import path from 'path';
+import nextConfig from '../../../../../next.config.mjs';
 
 interface Props {
   name: string;
@@ -38,7 +41,8 @@ const Price = ({
 };
 
 const Component = ({ name, picture, price, priceSale }: Props) => {
-  const phoneNumber = Deno.env.get('phoneNumber') ?? '';
+  console.log(picture);
+  const phoneNumber = process.env.phoneNumber ?? '';
   return (
     <div className="w-auto h-auto flex justify-center">
       <div className="flex justify-start flex-col w-52 md:w-32">
@@ -49,12 +53,15 @@ const Component = ({ name, picture, price, priceSale }: Props) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Image
+            <img
               alt={name}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              placeholder="blur"
-              src={'/image/mangas/' + picture}
+              src={
+                path.join(nextConfig.basePath, '/api/image') +
+                '?fileName=' +
+                picture
+              }
             />
           </a>
         </div>
