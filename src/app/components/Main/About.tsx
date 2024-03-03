@@ -1,4 +1,5 @@
-import ids from "../../config/id.ts";
+import ids from '../config/id';
+import Image from 'next/image';
 
 const Component = () => {
   return (
@@ -9,10 +10,11 @@ const Component = () => {
       <h1 className="text-center text-4xl mb-3">¿Quién soy?</h1>
       <div className="flex max-h-96">
         <div className="w-1/3 h-auto flex justify-center items-start">
-          <img
+          <Image
             alt="Owner"
             className="w-full h-full object-contain"
             loading="lazy"
+            placeholder="blur"
             src="/image/girl.png"
           />
         </div>

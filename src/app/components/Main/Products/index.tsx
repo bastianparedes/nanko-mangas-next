@@ -1,5 +1,5 @@
-import ids from "../../config/id";
-import Product from "./Product";
+import ids from '../../config/id';
+import Product from './Product';
 const Component = () => {
   return (
     <section className="flex justify-center mt-7 px-2" id={ids.products}>

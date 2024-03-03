@@ -1,8 +1,8 @@
-import ids from "../config/id";
-import Email from "../icons/Email";
-import Facebook from "../icons/Facebook";
-import Instagram from "../icons/Instagram";
-import Whatsapp from "../icons/Whatsapp";
+import ids from '../config/id';
+import Email from '../icons/Email';
+import Facebook from '../icons/Facebook';
+import Instagram from '../icons/Instagram';
+import Whatsapp from '../icons/Whatsapp';
 
 const Component = () => {
   return (
@@ -29,15 +29,19 @@ const Component = () => {
               <Instagram />
               <span className="text-lg">Ver Instagram</span>
             </a>
-            <a
-              className="text-[#25d366] flex justify-center w-fit items-center md:m-auto"
-              href="https://api.whatsapp.com/send?phone=+56993426163&text=Hola Nanko Mangas!, quiero preguntar por un manga."
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Whatsapp />
-              <span className="text-lg">Ver WhatsApp</span>
-            </a>
+            {process.env.phoneNumber !== undefined ? (
+              <a
+                className="text-[#25d366] flex justify-center w-fit items-center md:m-auto"
+                href={`https://api.whatsapp.com/send?phone=${process.env.phoneNumber}&text=Hola Nanko Mangas!, quiero preguntar por un manga.`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Whatsapp />
+                <span className="text-lg">Ver WhatsApp</span>
+              </a>
+            ) : (
+              <></>
+            )}
             <a
               className="text-[#316FF6] flex justify-center w-fit items-center md:m-auto"
               href="https://m.facebook.com/p/Nanko-Mangas-100083019438404/"
@@ -53,6 +57,5 @@ const Component = () => {
     </section>
   );
 };
-// linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
 
 export default Component;
