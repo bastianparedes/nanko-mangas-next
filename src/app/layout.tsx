@@ -5,8 +5,8 @@ import './globals.css';
 const urbanist = Urbanist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Mallas Provent',
-  description: 'Mallas Provent'
+  title: 'Nanko Mangas',
+  description: 'Nanko Mangas'
 };
 
 export default function RootLayout({

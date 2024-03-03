@@ -1,8 +1,8 @@
-import ids from '../config/id';
-import Email from '../icons/Email';
-import Facebook from '../icons/Facebook';
-import Instagram from '../icons/Instagram';
-import Whatsapp from '../icons/Whatsapp';
+import ids from '../../config/id';
+import ModalEmail from './ModalEmail';
+import Facebook from '../../icons/Facebook';
+import Instagram from '../../icons/Instagram';
+import Whatsapp from '../../icons/Whatsapp';
 
 const Component = () => {
   return (
@@ -20,6 +20,12 @@ const Component = () => {
             </p>
           </div>
           <div className="grid grid-cols-2 grid-rows-2 gap-4 text-6xl md:w-full md:m-0">
+            {process.env.email !== undefined &&
+            process.env.emailPassword !== undefined ? (
+              <ModalEmail />
+            ) : (
+              <></>
+            )}
             <a
               className="text-[#E1306C] flex justify-center w-fit items-center md:m-auto"
               href="https://www.instagram.com/nankomangas/"
