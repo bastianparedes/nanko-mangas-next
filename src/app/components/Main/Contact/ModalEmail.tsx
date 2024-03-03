@@ -13,7 +13,7 @@ const Component = () => {
   const closeModal = () => setIsModalOpen(false);
 
   // deno-lint-ignore no-explicit-any
-  const onChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const onChangeMessage = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setMessage(event.target.value);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

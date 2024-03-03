@@ -7,14 +7,9 @@ import Products from './components/Main/Products';
 import Footer from './components/Footer';
 
 const Page = async () => {
-  /* const files = await dropbox.filesListFolder({
-    path: '/images'
-  });
-  console.log(files.result.entries.map((file) => file.name)); */
-
   const response = await dropbox.filesDownload({ path: '/data.json' });
 
-  const contenidoBuffer = response.result.fileBinary as any;
+  const contenidoBuffer = (response.result as any).fileBinary;
   const contenidoString = contenidoBuffer.toString('utf-8');
   const productsData = JSON.parse(contenidoString);
 
