@@ -11,6 +11,7 @@
   "dependencies": {
     "dropbox": "^10.34.0",
     "next": "14.1.1",
+    "next-auth": "^4.24.6",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.11",
     "react": "^18",

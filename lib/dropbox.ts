@@ -2,7 +2,7 @@ import { Dropbox } from 'dropbox';
 import fetch from 'node-fetch';
 
 const config = {
-  accessToken: process.env.dropboxAccessToken,
+  accessToken: process.env.DROPBOX_ACCESS_TOKEN,
   fetch
 };
 

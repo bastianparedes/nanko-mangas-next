@@ -35,10 +35,10 @@ const Component = () => {
               <Instagram />
               <span className="text-lg">Ver Instagram</span>
             </a>
-            {process.env.phoneNumber !== undefined ? (
+            {process.env.PHONE_NUMBER !== undefined ? (
               <a
                 className="text-[#25d366] flex justify-center w-fit items-center md:m-auto"
-                href={`https://api.whatsapp.com/send?phone=${process.env.phoneNumber}&text=Hola Nanko Mangas!, quiero preguntar por un manga.`}
+                href={`https://api.whatsapp.com/send?phone=${process.env.PHONE_NUMBER}&text=Hola Nanko Mangas!, quiero preguntar por un manga.`}
                 rel="noopener noreferrer"
                 target="_blank"
               >

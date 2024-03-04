@@ -5,8 +5,8 @@ Created using Next 13
 
 Variable | Optional
 --- | ---
-phoneNumber | Yes
+PHONE_NUMBER | Yes
 email | Yes
 emailPassword | Depends on email
-dropboxAccessToken | No
+DROPBOX_ACCESS_TOKEN | No
 basePath | Yes
