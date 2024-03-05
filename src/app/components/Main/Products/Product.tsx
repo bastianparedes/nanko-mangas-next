@@ -22,7 +22,7 @@ const Price = ({
   return (
     <>
       <div className="flex items-center gap-2">
-        {/* <span className="font-bold text-base">$ {formatPrice(priceSale)}</span> */}
+        <span className="font-bold text-base">$ {formatPrice(priceSale)}</span>
         <span className="text-white py-0.5 px-1 bg-red-400 rounded text-xs">
           -{discount}%
         </span>

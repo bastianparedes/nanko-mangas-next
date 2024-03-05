@@ -12,9 +12,7 @@ import {
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { Product as TypeProduct } from '../../../../../types';
-const Product = dynamic(() => import('./Product'), {
-  ssr: false
-});
+import Product from './Product';
 
 interface Props {
   initialProducts: TypeProduct[];
@@ -37,7 +35,11 @@ const Component = ({ initialProducts }: Props) => {
 
   return (
     <div className="grid gap-12 mt-3 grid-cols-[repeat(auto-fill,_minmax(min(100%,_15rem),_1fr))] lg:gap-5 md:gap-2 md:grid-cols-[repeat(auto-fill,_minmax(min(100%,_7rem),_1fr))]">
-      <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={onDragEnd}
+        id={'DndContext'}
+      >
         <SortableContext items={products} strategy={rectSortingStrategy}>
           {products.map((product) => (
             <Product key={product.id} data={product} />
