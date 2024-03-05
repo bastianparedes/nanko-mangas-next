@@ -20,8 +20,8 @@ const Component = () => {
             </p>
           </div>
           <div className="grid grid-cols-2 grid-rows-2 gap-4 text-6xl md:w-full md:m-0">
-            {process.env.email !== undefined &&
-            process.env.emailPassword !== undefined ? (
+            {process.env.EMAIL !== undefined &&
+            process.env.EMAIL_PASSWORD !== undefined ? (
               <ModalEmail />
             ) : (
               <></>

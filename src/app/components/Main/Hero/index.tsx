@@ -1,6 +1,6 @@
 import ids from '../../config/id';
 import Image from 'next/image';
-import heroImage from './heroPicture.png';
+import heroImage from './heroImage.png';
 
 const Component = () => {
   return (

@@ -5,16 +5,16 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.email,
-    pass: process.env.emailPassword
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD
   }
 });
 
 const sendMail = async (message: string) => {
   try {
     await transporter.sendMail({
-      from: process.env.email,
-      to: process.env.email,
+      from: process.env.EMAIL,
+      to: process.env.EMAIL_PASSWORD,
       subject: `${message}`,
       text: 'Mensaje desde Página Nanko Mangas'
     });

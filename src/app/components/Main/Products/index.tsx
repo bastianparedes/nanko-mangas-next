@@ -1,14 +1,9 @@
 import ids from '../../config/id';
 import Product from './Product';
+import type { Product as TypeProduct } from '../../../../../types';
 
 interface Props {
-  productsData: {
-    name: string;
-    picture: string;
-    price: number;
-    visible: boolean;
-    priceSale?: number;
-  }[];
+  productsData: TypeProduct[];
 }
 
 const Component = ({ productsData }: Props) => {
@@ -18,14 +13,8 @@ const Component = ({ productsData }: Props) => {
         <h1 className="text-center text-4xl mb-5">Mangas disponibles</h1>
         <div className="grid gap-12 mt-3 grid-cols-[repeat(auto-fill,_minmax(min(100%,_15rem),_1fr))] lg:gap-5 md:gap-2 md:grid-cols-[repeat(auto-fill,_minmax(min(100%,_7rem),_1fr))]">
           {productsData.length > 0 ? (
-            productsData.map((manga, index) => (
-              <Product
-                key={index}
-                name={manga.name}
-                picture={manga.picture}
-                price={manga.price}
-                priceSale={manga.priceSale}
-              />
+            productsData.map((product, index) => (
+              <Product key={product.id} data={product} />
             ))
           ) : (
             <></>

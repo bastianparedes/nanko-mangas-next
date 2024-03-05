@@ -1,14 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 // import Image from 'next/image';
 import path from 'path';
-import nextConfig from '../../../../next.config.mjs';
-
-interface Props {
-  name: string;
-  picture: string;
-  price: number;
-  priceSale: number | undefined;
-}
+import nextConfig from '../../../../../next.config.mjs';
+import type { Product } from '../../../../../types';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -17,10 +13,10 @@ const Price = ({
   price,
   priceSale
 }: {
-  price: Props['price'];
-  priceSale: Props['priceSale'];
+  price: Product['price'];
+  priceSale: Product['priceSale'];
 }) => {
-  if (priceSale === undefined) {
+  if (priceSale === null) {
     return <span className="font-bold text-base">$ {formatPrice(price)}</span>;
   }
 
@@ -40,25 +36,40 @@ const Price = ({
   );
 };
 
-const Component = ({ name, picture, price, priceSale }: Props) => {
-  const PHONE_NUMBER = process.env.PHONE_NUMBER ?? '';
+interface Props {
+  data: Product;
+}
+
+const Component = ({ data }: Props) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: data.id });
+
   return (
-    <div className="w-auto h-auto flex justify-center">
+    <div
+      className="w-auto h-auto flex justify-center"
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition
+      }}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+    >
       <div className="flex justify-start flex-col w-52 md:w-32">
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
           <img
-            alt={name}
+            alt={data.id}
             className="w-full h-full object-cover"
             loading="lazy"
             src={
               path.join(nextConfig.basePath, '/api/image') +
               '?fileName=' +
-              picture
+              data.image
             }
           />
         </div>
-        <span className="my-1 md:text-base/4">{name}</span>
-        <Price price={price} priceSale={priceSale} />
+        <span className="my-1 md:text-base/4">{data.id}</span>
+        <Price price={data.price} priceSale={data.priceSale} />
       </div>
     </div>
   );

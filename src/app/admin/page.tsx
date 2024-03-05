@@ -1,12 +1,12 @@
 import dropbox from '../../../lib/dropbox';
 import CloserSession from './components/CloserSession';
-import Product from './components/Product';
+import Product from './components/Products/Product';
 import path from 'path';
 import nextConfig from '../../../next.config.mjs';
 import Products from './components/Products';
 
 const Page = async () => {
-  const products = JSON.parse(
+  const initialProducts = JSON.parse(
     (
       (await dropbox.filesDownload({ path: '/data.json' })).result as any
     ).fileBinary.toString('utf-8')
@@ -22,7 +22,7 @@ const Page = async () => {
       <a href={path.join(nextConfig.basePath, '/admin/uploadImage')}>
         Subir imagen
       </a>
-      <Products initialProducts={products} />
+      <Products initialProducts={initialProducts} />
     </>
   );
 };
