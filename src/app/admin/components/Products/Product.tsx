@@ -61,11 +61,7 @@ const Component = ({ data }: Props) => {
             alt={data.id}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={
-              path.join(nextConfig.basePath, '/api/image') +
-              '?fileName=' +
-              data.image
-            }
+            src={path.join(nextConfig.basePath, '/api/image', data.image)}
           />
         </div>
         <span className="my-1 md:text-base/4">{data.id}</span>

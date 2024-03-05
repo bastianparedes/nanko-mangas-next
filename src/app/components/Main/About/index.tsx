@@ -1,5 +1,6 @@
-import ids from '../config/id';
+import ids from '../../config/id';
 import Image from 'next/image';
+import girl from './girl.png';
 
 const Component = () => {
   return (
@@ -15,7 +16,7 @@ const Component = () => {
             className="w-full h-full object-contain"
             loading="lazy"
             placeholder="blur"
-            src="/image/girl.png"
+            src={girl}
           />
         </div>
         <div className="w-2/3">

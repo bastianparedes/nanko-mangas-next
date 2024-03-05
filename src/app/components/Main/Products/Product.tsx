@@ -54,11 +54,7 @@ const Component = ({ data }: Props) => {
               alt={data.id}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              src={
-                path.join(nextConfig.basePath, '/api/image') +
-                '?fileName=' +
-                data.image
-              }
+              src={path.join(nextConfig.basePath, '/api/image', data.image)}
             />
           </a>
         </div>
