@@ -14,7 +14,14 @@ const POST = async (request: Request) => {
       path: path.join('/images', file.name),
       contents: file
     });
-  } catch {
+
+    const sharedLink = (
+      await dropbox.sharingCreateSharedLinkWithSettings({
+        path: path.join('/images', file.name)
+      })
+    ).result.url;
+  } catch (error) {
+    console.log(error);
     return Response.json({ success: false }, { status: 404 });
   }
 
