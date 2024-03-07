@@ -1,4 +1,4 @@
-import dropbox from '../../../../../modules/dropbox';
+import dropbox from '../../../../../modules/fileSystem';
 
 interface Params {
   params: {

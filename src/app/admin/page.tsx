@@ -1,4 +1,4 @@
-import dropbox from '../../../modules/dropbox';
+import dropbox from '../../../modules/fileSystem';
 import CloserSession from './components/CloserSession';
 import Product from './components/Products/Product';
 import path from 'path';

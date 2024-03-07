@@ -1,4 +1,4 @@
-import dropbox from '../../../../../modules/dropbox';
+import dropbox from '../../../../../modules/fileSystem';
 import path from 'path';
 
 const POST = async (request: Request) => {

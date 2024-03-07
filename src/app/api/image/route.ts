@@ -1,4 +1,4 @@
-import dropbox from '../../../../modules/dropbox';
+import dropbox from '../../../../modules/fileSystem';
 
 const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
