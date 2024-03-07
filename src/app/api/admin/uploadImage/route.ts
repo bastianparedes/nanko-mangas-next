@@ -1,31 +1,18 @@
-import dropbox from '../../../../../modules/fileSystem';
-import path from 'path';
+import { insertImage } from '../../../../../modules/db';
 
 const POST = async (request: Request) => {
   const data = await request.formData();
+  const descriptiveName: string | null = data.get(
+    'descriptiveName'
+  ) as unknown as string;
   const file: File | null = data.get('image') as unknown as File;
 
-  if (!file) {
-    return Response.json({ success: false }, { status: 404 });
-  }
+  const response = await insertImage({
+    descriptiveName,
+    file
+  });
 
-  try {
-    await dropbox.filesUpload({
-      path: path.join('/images', file.name),
-      contents: file
-    });
-
-    const sharedLink = (
-      await dropbox.sharingCreateSharedLinkWithSettings({
-        path: path.join('/images', file.name)
-      })
-    ).result.url;
-  } catch (error) {
-    console.log(error);
-    return Response.json({ success: false }, { status: 404 });
-  }
-
-  return Response.json({ success: true });
+  return Response.json(response);
 };
 
 export { POST };

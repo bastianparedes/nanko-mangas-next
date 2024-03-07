@@ -63,23 +63,6 @@ const insertImage = async ({
   });
 };
 
-const updateProduct = async (id, values: {
-  id: number;
-  name: string;
-  priceNormal: number;
-  priceOffer: number | null | undefined;
-  visible: boolean;
-  quantity: number;
-  id_image: number;
-}) => {
-  await db
-    .update(schema.Product)
-    .set({
-      quantity: 0
-    })
-    .where(eq(schema.Product.id, values.id));
-};
-
 const insertProduct = async (values: {
   name: string;
   priceNormal: number;
@@ -101,4 +84,24 @@ const insertProduct = async (values: {
   };
 };
 
-export default drizzle(client, { schema });
+const updateProduct = async (
+  id: number,
+  values: {
+    id: number;
+    name: string;
+    priceNormal: number;
+    priceOffer: number | null | undefined;
+    visible: boolean;
+    quantity: number;
+    id_image: number;
+  }
+) => {
+  await db
+    .update(schema.Product)
+    .set({
+      quantity: 0
+    })
+    .where(eq(schema.Product.id, values.id));
+};
+
+export { insertImage, insertProduct, updateProduct };
