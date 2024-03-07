@@ -1,4 +1,4 @@
-import sendMail from '../../../../lib/mail';
+import sendMail from '../../../../modules/mail';
 
 const POST = async (request: Request) => {
   try {

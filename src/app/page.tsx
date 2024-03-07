@@ -1,4 +1,4 @@
-import dropbox from '../../lib/dropbox';
+import dropbox from '../../modules/dropbox';
 import Header from './components/Header';
 import Hero from './components/Main/Hero';
 import About from './components/Main/About';

@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+
+  database:
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - ./modules/postgres/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+
+  nanko_mangas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nanko_mangas_image
+    depends_on:
+      - "database"
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
+volumes:
+  data:
