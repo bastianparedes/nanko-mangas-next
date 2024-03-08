@@ -33,11 +33,20 @@ const insertImage = async ({
   return await db.transaction(async (tx) => {
     try {
       const uuid = crypto.randomUUID();
-      const name = uuid + '.png';
+      const name = uuid + '.webp';
+
+      const arrayBuffer = await file.arrayBuffer();
+
+      const buffer = await sharp(arrayBuffer)
+        .resize(200, 323, {
+          fit: 'cover'
+        })
+        .webp({ lossless: false })
+        .toBuffer();
 
       await fileSystem.filesUpload({
         path: path.join('/images', name),
-        contents: file
+        contents: buffer
       });
 
       const sharedLink = (

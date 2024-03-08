@@ -68,7 +68,7 @@ const Component: React.FC = () => {
           type="file"
           id="image"
           name="image"
-          accept=".png, .jpg, .jpeg"
+          accept=".jpg, .jpeg, .png, .webp, .gif, .avif, .tiff, .svg"
           onChange={handlePhotoChange}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           required
