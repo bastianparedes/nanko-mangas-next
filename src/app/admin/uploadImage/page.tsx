@@ -3,10 +3,17 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import path from 'path';
 import nextConfig from '../../../../next.config.mjs';
+import { trpc } from '../../_trpc/client';
 
 const Component: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
+
+  const getTodos = trpc.getTodos.useQuery();
+  const getHola = trpc.getHola.useMutation({
+    onSettled: () => getTodos.refetch()
+  });
+  getHola.mutate('string obligatorio');
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -47,7 +54,7 @@ const Component: React.FC = () => {
     <form className="max-w-md mx-auto mt-8" onSubmit={handleSubmit}>
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-          Name:
+          Name: {getTodos.data}
         </label>
         <input
           type="text"
