@@ -53,7 +53,7 @@ const insertImage = async ({
 
       const sharedLink = (
         await fileSystem.sharingCreateSharedLinkWithSettings({
-          path: fullName,
+          path: fullName
         })
       ).result.url;
       const url = new URL(sharedLink);
