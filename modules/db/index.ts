@@ -44,14 +44,16 @@ const insertImage = async ({
         .webp({ lossless: false })
         .toBuffer();
 
+      const fullName = path.join('/images', name).replaceAll('\\', '/');
+
       await fileSystem.filesUpload({
-        path: path.join('/images', name),
+        path: fullName,
         contents: buffer
       });
 
       const sharedLink = (
         await fileSystem.sharingCreateSharedLinkWithSettings({
-          path: path.join('/images', name)
+          path: fullName,
         })
       ).result.url;
       const url = new URL(sharedLink);
@@ -63,6 +65,7 @@ const insertImage = async ({
         url: url.toString()
       });
     } catch (_error) {
+      // console.log('ERROR AL SUBIR ARCHIVO', _error);
       tx.rollback();
 
       return {
