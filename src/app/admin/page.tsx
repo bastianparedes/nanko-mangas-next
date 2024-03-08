@@ -1,9 +1,9 @@
 import dropbox from '../../../modules/fileSystem';
-import CloserSession from './components/CloserSession';
-import Product from './components/Products/Product';
+import CloserSession from './_components/CloserSession';
+import Product from './_components/Products/Product';
 import path from 'path';
 import nextConfig from '../../../next.config.mjs';
-import Products from './components/Products';
+import Products from './_components/Products';
 
 const Page = async () => {
   const initialProducts = JSON.parse(

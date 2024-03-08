@@ -1,10 +1,10 @@
 import dropbox from '../../modules/fileSystem';
-import Header from './components/Header';
-import Hero from './components/Main/Hero';
-import About from './components/Main/About';
-import Contact from './components/Main/Contact';
-import Products from './components/Main/Products';
-import Footer from './components/Footer';
+import Header from './_components/Header';
+import Hero from './_components/Main/Hero';
+// import About from './_components/Main/About';
+import Contact from './_components/Main/Contact';
+import Products from './_components/Main/Products';
+import Footer from './_components/Footer';
 
 const Page = async () => {
   const response = await dropbox.filesDownload({ path: '/data.json' });
