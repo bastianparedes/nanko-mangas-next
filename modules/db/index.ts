@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import fileSystem from '../fileSystem';
 import path from 'path';
+import sharp from 'sharp';
 
 import * as schema from './schema';
 
@@ -32,22 +33,25 @@ const insertImage = async ({
   return await db.transaction(async (tx) => {
     try {
       const uuid = crypto.randomUUID();
+      const name = uuid + '.png';
 
       await fileSystem.filesUpload({
-        path: path.join('/images', uuid),
+        path: path.join('/images', name),
         contents: file
       });
 
       const sharedLink = (
         await fileSystem.sharingCreateSharedLinkWithSettings({
-          path: path.join('/images', uuid)
+          path: path.join('/images', name)
         })
       ).result.url;
+      const url = new URL(sharedLink);
+      url.hostname = url.hostname.replace(/^www\./, 'dl.');
 
       await db.insert(schema.Image).values({
         descriptiveName: descriptiveName,
-        storedName: uuid,
-        url: sharedLink
+        storedName: name,
+        url: url.toString()
       });
     } catch (_error) {
       tx.rollback();
@@ -105,3 +109,4 @@ const updateProduct = async (
 };
 
 export { insertImage, insertProduct, updateProduct };
+export default db;

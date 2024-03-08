@@ -26,20 +26,17 @@ const Component: React.FC = () => {
       return;
     }
 
-    // Create a FormData object to send to the server
     const formData = new FormData();
     formData.append('descriptiveName', name);
     formData.append('image', image);
 
-    // Send the formData to your endpoint
     fetch(path.join(nextConfig.basePath, '/api/admin/uploadImage'), {
       method: 'POST',
-      body: formData,
+      body: formData
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Server response:', data);
-        // Handle the server response here
+        alert('Server response:' + data);
       })
       .catch((error) => {
         console.error('Error sending data:', error);

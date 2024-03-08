@@ -1,4 +1,4 @@
-import dropbox from '../../../../modules/fileSystem';
+import db from '../../../../modules/db';
 
 const GET = async (request: Request) => {
   /* console.log(
@@ -12,9 +12,11 @@ const GET = async (request: Request) => {
   /* console.log(
     `curl https://api.dropbox.com/oauth2/token -d grant_type=refresh_token -d refresh_token=${process.env.DROPBOX_REFRESH_TOKEN} -d client_id=${process.env.DROPBOX_APP_KEY} -d client_secret=${process.env.DROPBOX_APP_SECRET}`
   ); */
+  const result = await db.query.Image.findMany({});
+  console.log('AYUDA');
+  console.log(result);
 
-  console.log(crypto.randomUUID());
-  return new Response('HOLA MUNDO');
+  return Response.json(result);
 };
 
 export { GET };
