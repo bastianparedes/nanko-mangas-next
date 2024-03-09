@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Urbanist } from 'next/font/google';
 import './globals.css';
-import { Provider } from './_trpc/Provider';
+import { Provider } from './_context/TrpcProvider';
 
 const urbanist = Urbanist({ subsets: ['latin'] });
 

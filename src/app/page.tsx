@@ -5,7 +5,7 @@ import Hero from './_components/Main/Hero';
 import Contact from './_components/Main/Contact';
 import Products from './_components/Main/Products';
 import Footer from './_components/Footer';
-import { serverClient } from './_trpc/serverClient';
+import { serverClient } from '../../modules/trpc/serverClient';
 
 const Page = async () => {
   const products = await serverClient.getProducts({

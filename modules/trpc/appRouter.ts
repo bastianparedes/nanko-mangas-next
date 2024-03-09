@@ -1,4 +1,3 @@
-import { router, publicProcedure } from './trpc';
 import { z } from 'zod';
 import {
   insertImage,
@@ -9,7 +8,13 @@ import {
   updateProduct,
   deleteImage,
   deleteProduct
-} from '../../modules/db';
+} from '../db';
+
+import { initTRPC } from '@trpc/server';
+
+const t = initTRPC.create();
+const router = t.router;
+const publicProcedure = t.procedure;
 
 const appRouter = router({
   insertImage: publicProcedure
@@ -102,4 +107,3 @@ const appRouter = router({
 });
 
 export { appRouter };
-export type AppRouter = typeof appRouter;

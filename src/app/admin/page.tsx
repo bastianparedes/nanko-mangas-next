@@ -4,7 +4,7 @@ import Product from './_components/Products/Product';
 import path from 'path';
 import nextConfig from '../../../next.config.mjs';
 import Products from './_components/Products';
-import { serverClient } from '../_trpc/serverClient';
+import { serverClient } from '../../../modules/trpc/serverClient';
 
 const Page = async () => {
   const products = await serverClient.getProducts({

@@ -3,7 +3,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import path from 'path';
 import nextConfig from '../../../../next.config.mjs';
-import { trpc } from '../../_trpc/client';
+import { trpc } from '../../../../modules/trpc/client';
 
 const Component = () => {
   const [name, setName] = useState('');
