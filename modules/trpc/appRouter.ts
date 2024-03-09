@@ -40,20 +40,19 @@ const appRouter = router({
         priceOffer: z.union([z.number().int().nonnegative(), z.null()]),
         visible: z.boolean(),
         quantity: z.number().int().nonnegative(),
-        id_image: z.number()
+        id_image: z.union([z.number().int().nonnegative(), z.null()])
       })
     )
-    .mutation(
-      async ({ input }) =>
-        await insertProduct({
-          name: input.name,
-          priceNormal: input.priceNormal,
-          priceOffer: input.priceOffer,
-          visible: input.visible,
-          quantity: input.quantity,
-          id_image: input.id_image
-        })
-    ),
+    .mutation(async ({ input }) => {
+      await insertProduct({
+        name: input.name,
+        priceNormal: input.priceNormal,
+        priceOffer: input.priceOffer,
+        visible: input.visible,
+        quantity: input.quantity,
+        id_image: input.id_image
+      });
+    }),
   getImages: publicProcedure.query(async () => await getImages()),
   getProducts: publicProcedure
     .input(

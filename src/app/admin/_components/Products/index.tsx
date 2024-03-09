@@ -11,22 +11,26 @@ import {
 } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import Product from './Product';
+import { trpcClient } from '../../../../../modules/trpc/client';
 
 interface Props {
   initialProducts: {
-    id: number;
     name: string;
-    imageUrl: string | null;
     priceNormal: number;
     priceOffer: number | null;
     visible: boolean;
     quantity: number;
     id_image: number | null;
+    id: number;
+    image: {
+      url: string;
+    } | null;
   }[];
 }
 
 const Component = ({ initialProducts }: Props) => {
   const [products, setProducts] = useState(initialProducts);
+  const insertProduct = trpcClient.insertProduct.useMutation();
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (over === null || active.id === over.id) return;
@@ -37,6 +41,17 @@ const Component = ({ initialProducts }: Props) => {
       );
       const indexOver = previousState.findIndex((item) => item.id === over.id);
       return arrayMove(previousState, indexActive, indexOver);
+    });
+  };
+
+  const createProduct = () => {
+    insertProduct.mutate({
+      name: 'Nuevo manga',
+      priceNormal: 0,
+      priceOffer: null,
+      visible: false,
+      quantity: 0,
+      id_image: null
     });
   };
 
@@ -53,7 +68,9 @@ const Component = ({ initialProducts }: Props) => {
           ))}
         </SortableContext>
       </DndContext>
-      <div className="w-52 h-52 bg-red-500" draggable={false}></div>
+      <button onClick={createProduct}>
+        <div className="w-52 h-52 bg-red-500" draggable={false}></div>
+      </button>
     </div>
   );
 };

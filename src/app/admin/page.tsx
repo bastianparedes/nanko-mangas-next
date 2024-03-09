@@ -15,24 +15,13 @@ const Page = async () => {
     maxPrice: null
   });
 
-  const productsData = products.map((product) => ({
-    id: product.id,
-    name: product.name,
-    imageUrl: product.image?.url || null,
-    priceNormal: product.priceNormal,
-    priceOffer: product.priceOffer,
-    visible: product.visible,
-    quantity: product.quantity,
-    id_image: product.id_image
-  }));
-
   return (
     <>
       <CloserSession />
       <a href={path.join(nextConfig.basePath, '/admin/uploadImage')}>
-        Subir imagen
+        Upload image
       </a>
-      <Products initialProducts={productsData} />
+      <Products initialProducts={products} />
     </>
   );
 };

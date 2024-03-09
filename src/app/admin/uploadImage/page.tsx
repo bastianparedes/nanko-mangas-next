@@ -3,7 +3,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import path from 'path';
 import nextConfig from '../../../../next.config.mjs';
-import { trpc } from '../../../../modules/trpc/client';
 
 const Component = () => {
   const [name, setName] = useState('');
@@ -21,9 +20,10 @@ const Component = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimedName = name.trim();
 
-    if (!name || !image) {
-      console.error('Please fill out all fields.');
+    if (trimedName === '' || image === null) {
+      alert('Please fill out all fields.');
       return;
     }
 
@@ -37,7 +37,7 @@ const Component = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert('Server response:' + data);
+        alert(data.success ? 'Proccess succeded' : 'Process failed');
       })
       .catch((error) => {
         console.error('Error sending data:', error);

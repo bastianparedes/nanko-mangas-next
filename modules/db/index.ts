@@ -69,19 +69,20 @@ const insertProduct = async (values: {
   priceOffer: number | null;
   visible: boolean;
   quantity: number;
-  id_image: number;
+  id_image: number | null;
 }) => {
   try {
-    await db.insert(schema.Product).values(values);
+    const data = await db.insert(schema.Product).values(values).returning();
+    return {
+      data,
+      success: true
+    };
   } catch {
     return {
+      data: null,
       success: false
     };
   }
-
-  return {
-    success: true
-  };
 };
 
 const getImages = async () => await db.query.Image.findMany();
@@ -134,11 +135,18 @@ const updateImage = async (
   values: { descriptiveName?: string }
 ) => {
   try {
-    await db.update(schema.Image).set(values).where(eq(schema.Image.id, id));
+    const data = await db
+      .update(schema.Image)
+      .set(values)
+      .where(eq(schema.Image.id, id))
+      .returning();
+    return {
+      data,
+      success: true
+    };
   } catch {
-    return { success: false };
+    return { data: null, success: false };
   }
-  return { success: true };
 };
 
 const updateProduct = async (
@@ -153,32 +161,42 @@ const updateProduct = async (
   }
 ) => {
   try {
-    await db
+    const data = await db
       .update(schema.Product)
       .set(values)
-      .where(eq(schema.Product.id, id));
+      .where(eq(schema.Product.id, id))
+      .returning();
+    return { data, success: true };
   } catch {
-    return { success: false };
+    return { data: null, success: false };
   }
-  return { success: true };
 };
 
 const deleteImage = async (id: number) => {
   try {
-    await db.delete(schema.Image).where(eq(schema.Image.id, id));
+    const data = await db
+      .delete(schema.Image)
+      .where(eq(schema.Image.id, id))
+      .returning();
+    return { data, success: true };
   } catch {
-    return { success: false };
+    return { data: null, success: false };
   }
-  return { success: true };
 };
 
 const deleteProduct = async (id: number) => {
   try {
-    await db.delete(schema.Product).where(eq(schema.Product.id, id));
+    const data = await db
+      .delete(schema.Product)
+      .where(eq(schema.Product.id, id))
+      .returning();
+    return {
+      data,
+      success: true
+    };
   } catch {
-    return { success: false };
+    return { data: null, success: false };
   }
-  return { success: true };
 };
 
 export {

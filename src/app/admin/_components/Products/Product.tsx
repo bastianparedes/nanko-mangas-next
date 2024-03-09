@@ -3,48 +3,18 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import imageNotFound from '../../../../../resources/images/not-found.webp';
 
-const formatPrice = (number: number) =>
-  number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-const Price = ({
-  priceNormal,
-  priceOffer
-}: {
-  priceNormal: number;
-  priceOffer: number | null;
-}) => {
-  if (priceOffer === null) {
-    return (
-      <span className="font-bold text-base">$ {formatPrice(priceNormal)}</span>
-    );
-  }
-
-  const discount = 100 - Math.round((100 * priceOffer) / priceNormal);
-  return (
-    <>
-      <div className="flex items-center gap-2">
-        <span className="font-bold text-base">$ {formatPrice(priceOffer)}</span>
-        <span className="text-white py-0.5 px-1 bg-red-400 rounded text-xs">
-          -{discount}%
-        </span>
-      </div>
-      <span className="line-through text-gray-400 text-sm">
-        $ {formatPrice(priceNormal)}
-      </span>
-    </>
-  );
-};
-
 interface Props {
   data: {
-    id: number;
     name: string;
-    imageUrl: string | null;
     priceNormal: number;
     priceOffer: number | null;
     visible: boolean;
     quantity: number;
     id_image: number | null;
+    id: number;
+    image: {
+      url: string;
+    } | null;
   };
 }
 
@@ -69,11 +39,16 @@ const Component = ({ data }: Props) => {
             alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={data.imageUrl ?? imageNotFound}
+            src={data.image?.url ?? imageNotFound}
           />
         </div>
-        <span className="my-1 md:text-base/4">{data.id}</span>
-        <Price priceNormal={data.priceNormal} priceOffer={data.priceOffer} />
+        <span className="my-1 md:text-base/4">Name: {data.name}</span>
+        <span className="my-1 md:text-base/4">
+          Normal price: {data.priceNormal}
+        </span>
+        <span className="my-1 md:text-base/4">
+          Normal offer: {String(data.priceOffer)}
+        </span>
       </div>
     </div>
   );

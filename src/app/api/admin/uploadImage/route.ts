@@ -2,7 +2,7 @@ import { insertImage } from '../../../../../modules/db';
 
 const POST = async (request: Request) => {
   const data = await request.formData();
-  const descriptiveName: string | null = data.get(
+  const descriptiveName: string = data.get(
     'descriptiveName'
   ) as unknown as string;
   const file: File = data.get('image') as unknown as File;
