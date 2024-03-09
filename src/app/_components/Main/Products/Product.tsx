@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-// import Image from 'next/image';
-import path from 'path';
-import nextConfig from '../../../../../next.config.mjs';
+import Image from 'next/image';
+import imageNotFound from '../../../../../resources/images/not-found.webp';
 
 const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -57,11 +55,11 @@ const Component = ({ data }: Props) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <img
+            <Image
               alt={data.name}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              src={data.imageUrl ?? undefined}
+              src={data.imageUrl ?? imageNotFound}
             />
           </a>
         </div>

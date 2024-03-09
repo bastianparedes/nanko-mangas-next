@@ -1,9 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-// import Image from 'next/image';
-import path from 'path';
-import nextConfig from '../../../../../next.config.mjs';
+import Image from 'next/image';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import imageNotFound from '../../../../../resources/images/not-found.webp';
 
 const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -67,15 +65,11 @@ const Component = ({ data }: Props) => {
     >
       <div className="flex justify-start flex-col w-52 md:w-32">
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
-          <img
+          <Image
             alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={
-              data.imageUrl !== null
-                ? path.join(nextConfig.basePath, '/api/image', data.imageUrl)
-                : undefined
-            }
+            src={data.imageUrl ?? imageNotFound}
           />
         </div>
         <span className="my-1 md:text-base/4">{data.id}</span>

@@ -18,9 +18,10 @@ const sendMail = async (message: string) => {
       subject: `${message}`,
       text: 'Mensaje desde Página Nanko Mangas'
     });
-    return { success: true };
   } catch {
     return { success: false };
   }
+
+  return { success: true };
 };
 export default sendMail;

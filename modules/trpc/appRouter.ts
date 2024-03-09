@@ -9,6 +9,7 @@ import {
   deleteImage,
   deleteProduct
 } from '../db';
+import sendMail from '../mail';
 
 import { initTRPC } from '@trpc/server';
 
@@ -103,7 +104,10 @@ const appRouter = router({
         id: z.number()
       })
     )
-    .mutation(async ({ input }) => await deleteProduct(input.id))
+    .mutation(async ({ input }) => await deleteProduct(input.id)),
+  sendMail: publicProcedure
+    .input(z.string())
+    .mutation(async ({ input }) => await sendMail(input))
 });
 
 export { appRouter };
