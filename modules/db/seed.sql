@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS "Image" (
 	"storedName" varchar NOT NULL,
 	"url" varchar NOT NULL,
 	CONSTRAINT "Image_id_unique" UNIQUE("id"),
-	CONSTRAINT "Image_descriptiveName_unique" UNIQUE("descriptiveName"),
 	CONSTRAINT "Image_storedName_unique" UNIQUE("storedName")
 );
 --> statement-breakpoint
@@ -15,9 +14,8 @@ CREATE TABLE IF NOT EXISTS "Product" (
 	"priceOffer" integer,
 	"visible" boolean NOT NULL,
 	"quantity" integer,
-	"id_image" integer NOT NULL,
-	CONSTRAINT "Product_id_unique" UNIQUE("id"),
-	CONSTRAINT "Product_name_unique" UNIQUE("name")
+	"id_image" integer,
+	CONSTRAINT "Product_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
 DO $$ BEGIN

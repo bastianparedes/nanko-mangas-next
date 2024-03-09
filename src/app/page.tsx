@@ -5,6 +5,7 @@ import Hero from './_components/Main/Hero';
 import Contact from './_components/Main/Contact';
 import Products from './_components/Main/Products';
 import Footer from './_components/Footer';
+import db from 
 
 const Page = async () => {
   const response = await dropbox.filesDownload({ path: '/data.json' });

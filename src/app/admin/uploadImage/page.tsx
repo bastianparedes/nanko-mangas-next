@@ -10,10 +10,10 @@ const Component: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
 
   const getTodos = trpc.getTodos.useQuery();
-  const getHola = trpc.getHola.useMutation({
+  /* const getHola = trpc.getHola.useMutation({
     onSettled: () => getTodos.refetch()
-  });
-  getHola.mutate('string obligatorio');
+  }); */
+  /* getHola.mutate('string obligatorio'); */
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);

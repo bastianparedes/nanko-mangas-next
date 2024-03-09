@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, gt, gte, ilike, lte, or } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import fileSystem from '../fileSystem';
@@ -120,5 +120,45 @@ const updateProduct = async (
     .where(eq(schema.Product.id, values.id));
 };
 
-export { insertImage, insertProduct, updateProduct };
+const getProducts = async ({
+  filterByName = '',
+  includeNoStore = false,
+  includeNoVisible = true,
+  minPrice = -Infinity,
+  maxPrice = Infinity
+}: {
+  filterByName: string;
+  includeNoStore: boolean;
+  includeNoVisible: boolean;
+  minPrice: number;
+  maxPrice: number;
+}) => {
+  const { Product } = schema;
+  const response = await db.query.Product.findMany({
+    where: and(
+      !includeNoVisible ? eq(Product.visible, true) : undefined,
+      !includeNoStore ? gt(Product.quantity, 0) : undefined,
+      ilike(Product.name, '%' + filterByName.trim().split('').join('%') + '%'),
+      or(gte(Product.priceNormal, minPrice), gte(Product.priceOffer, minPrice)),
+      or(lte(Product.priceNormal, maxPrice), lte(Product.priceOffer, maxPrice))
+    ),
+    with: {
+      image: {
+        columns: {
+          url: true
+        }
+      }
+    }
+  });
+
+  return response;
+};
+
+const getImages = async () => {
+  const images = await db.query.Image.findMany();
+
+  return images;
+};
+
+export { insertImage, insertProduct, updateProduct, getProducts, getImages };
 export default db;
