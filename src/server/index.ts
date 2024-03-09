@@ -6,7 +6,9 @@ import {
   getImages,
   getProducts,
   updateImage,
-  updateProduct
+  updateProduct,
+  deleteImage,
+  deleteProduct
 } from '../../modules/db';
 
 const appRouter = router({
@@ -17,12 +19,13 @@ const appRouter = router({
         descriptiveName: z.string()
       })
     )
-    .mutation(async (options) => {
-      return await insertImage({
-        file: options.input.file,
-        descriptiveName: options.input.descriptiveName
-      });
-    }),
+    .mutation(
+      async (options) =>
+        await insertImage({
+          file: options.input.file,
+          descriptiveName: options.input.descriptiveName
+        })
+    ),
   insertProduct: publicProcedure
     .input(
       z.object({
@@ -34,16 +37,17 @@ const appRouter = router({
         id_image: z.number()
       })
     )
-    .mutation(async ({ input }) => {
-      return await insertProduct({
-        name: input.name,
-        priceNormal: input.priceNormal,
-        priceOffer: input.priceOffer,
-        visible: input.visible,
-        quantity: input.quantity,
-        id_image: input.id_image
-      });
-    }),
+    .mutation(
+      async ({ input }) =>
+        await insertProduct({
+          name: input.name,
+          priceNormal: input.priceNormal,
+          priceOffer: input.priceOffer,
+          visible: input.visible,
+          quantity: input.quantity,
+          id_image: input.id_image
+        })
+    ),
   getImages: publicProcedure.query(async () => await getImages()),
   getProducts: publicProcedure
     .input(
@@ -63,18 +67,7 @@ const appRouter = router({
         values: z.object({ descriptiveName: z.string() })
       })
     )
-    .mutation(async ({ input }) => {
-      try {
-        await updateImage(input.id, input.values);
-      } catch {
-        return {
-          success: false
-        };
-      }
-      return {
-        success: true
-      };
-    }),
+    .mutation(async ({ input }) => await updateImage(input.id, input.values)),
   updateProduct: publicProcedure
     .input(
       z.object({
@@ -91,18 +84,21 @@ const appRouter = router({
         })
       })
     )
-    .mutation(async ({ input }) => {
-      try {
-        await updateProduct(input.id, input.values);
-      } catch {
-        return {
-          success: false
-        };
-      }
-      return {
-        success: true
-      };
-    })
+    .mutation(async ({ input }) => await updateProduct(input.id, input.values)),
+  deleteImage: publicProcedure
+    .input(
+      z.object({
+        id: z.number()
+      })
+    )
+    .mutation(async ({ input }) => await deleteImage(input.id)),
+  deleteProduct: publicProcedure
+    .input(
+      z.object({
+        id: z.number()
+      })
+    )
+    .mutation(async ({ input }) => await deleteProduct(input.id))
 });
 
 export { appRouter };

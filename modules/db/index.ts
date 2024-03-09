@@ -13,64 +13,54 @@ const client = new Client({
 client.connect();
 const db = drizzle(client, { schema });
 
-const insertImage = async ({
-  descriptiveName,
-  file
-}: {
-  descriptiveName: string;
-  file: File;
-}) => {
-  try {
-    await db.transaction(async (tx) => {
-      try {
-        const uuid = crypto.randomUUID();
-        const name = uuid + '.webp';
+const insertImage = async (values: { descriptiveName: string; file: File }) => {
+  return await db.transaction(async (tx) => {
+    try {
+      const uuid = crypto.randomUUID();
+      const name = uuid + '.webp';
 
-        const arrayBuffer = await file.arrayBuffer();
+      const arrayBuffer = await values.file.arrayBuffer();
 
-        const buffer = await sharp(arrayBuffer)
-          .resize(200, 323, {
-            fit: 'cover'
-          })
-          .webp({ lossless: false })
-          .toBuffer();
+      const buffer = await sharp(arrayBuffer)
+        .resize(200, 323, {
+          fit: 'cover'
+        })
+        .webp({ lossless: false })
+        .toBuffer();
 
-        const fullName = path.join('/images', name).replaceAll('\\', '/');
+      const fullName = path.join('/images', name).replaceAll('\\', '/');
 
-        await fileSystem.filesUpload({
-          path: fullName,
-          contents: buffer
-        });
+      await fileSystem.filesUpload({
+        path: fullName,
+        contents: buffer
+      });
 
-        const sharedLink = (
-          await fileSystem.sharingCreateSharedLinkWithSettings({
-            path: fullName
-          })
-        ).result.url;
-        const url = new URL(sharedLink);
-        url.hostname = url.hostname.replace(/^www\./, 'dl.');
+      const sharedLink = (
+        await fileSystem.sharingCreateSharedLinkWithSettings({
+          path: fullName
+        })
+      ).result.url;
+      const url = new URL(sharedLink);
+      url.hostname = url.hostname.replace(/^www\./, 'dl.');
 
-        await db.insert(schema.Image).values({
-          descriptiveName: descriptiveName,
-          storedName: name,
-          url: url.toString()
-        });
-      } catch (_error) {
-        // console.log('ERROR AL SUBIR ARCHIVO', _error);
-        tx.rollback();
+      await db.insert(schema.Image).values({
+        descriptiveName: values.descriptiveName,
+        storedName: name,
+        url: url.toString()
+      });
+    } catch (_error) {
+      // console.log('ERROR AL SUBIR ARCHIVO', _error);
+      tx.rollback();
 
-        return {
-          success: false
-        };
-      }
-    });
-  } catch {
-    return { success: false };
-  }
+      return {
+        success: false
+      };
+    }
 
-  return {
-    success: true
-  };
+    return {
+      success: true
+    };
+  });
 };
 
 const insertProduct = async (values: {
@@ -94,11 +84,7 @@ const insertProduct = async (values: {
   };
 };
 
-const getImages = async () => {
-  const images = await db.query.Image.findMany();
-
-  return images;
-};
+const getImages = async () => await db.query.Image.findMany();
 
 const getProducts = async ({
   filterByName = '',
@@ -112,23 +98,25 @@ const getProducts = async ({
   includeNoVisible: boolean;
   minPrice: number | null;
   maxPrice: number | null;
-}) => {
-  const { Product } = schema;
-  const response = await db.query.Product.findMany({
+}) =>
+  await db.query.Product.findMany({
     where: and(
-      !includeNoVisible ? eq(Product.visible, true) : undefined,
-      !includeNoStore ? gt(Product.quantity, 0) : undefined,
-      ilike(Product.name, '%' + filterByName.trim().split('').join('%') + '%'),
+      !includeNoVisible ? eq(schema.Product.visible, true) : undefined,
+      !includeNoStore ? gt(schema.Product.quantity, 0) : undefined,
+      ilike(
+        schema.Product.name,
+        '%' + filterByName.trim().split('').join('%') + '%'
+      ),
       minPrice !== null
         ? or(
-            gte(Product.priceNormal, minPrice),
-            gte(Product.priceOffer, minPrice)
+            gte(schema.Product.priceNormal, minPrice),
+            gte(schema.Product.priceOffer, minPrice)
           )
         : undefined,
       maxPrice !== null
         ? or(
-            lte(Product.priceNormal, maxPrice),
-            lte(Product.priceOffer, maxPrice)
+            lte(schema.Product.priceNormal, maxPrice),
+            lte(schema.Product.priceOffer, maxPrice)
           )
         : undefined
     ),
@@ -140,9 +128,6 @@ const getProducts = async ({
       }
     }
   });
-
-  return response;
-};
 
 const updateImage = async (
   id: number,
@@ -178,12 +163,32 @@ const updateProduct = async (
   return { success: true };
 };
 
+const deleteImage = async (id: number) => {
+  try {
+    await db.delete(schema.Image).where(eq(schema.Image.id, id));
+  } catch {
+    return { success: false };
+  }
+  return { success: true };
+};
+
+const deleteProduct = async (id: number) => {
+  try {
+    await db.delete(schema.Product).where(eq(schema.Product.id, id));
+  } catch {
+    return { success: false };
+  }
+  return { success: true };
+};
+
 export {
   insertImage,
   insertProduct,
   getImages,
   getProducts,
   updateImage,
-  updateProduct
+  updateProduct,
+  deleteImage,
+  deleteProduct
 };
 export default db;
