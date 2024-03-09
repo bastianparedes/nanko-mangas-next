@@ -7,27 +7,29 @@ const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 const Price = ({
-  price,
-  priceSale
+  priceNormal,
+  priceOffer
 }: {
-  price: number;
-  priceSale: number | null;
+  priceNormal: number;
+  priceOffer: number | null;
 }) => {
-  if (priceSale === null) {
-    return <span className="font-bold text-base">$ {formatPrice(price)}</span>;
+  if (priceOffer === null) {
+    return (
+      <span className="font-bold text-base">$ {formatPrice(priceNormal)}</span>
+    );
   }
 
-  const discount = 100 - Math.round((100 * priceSale) / price);
+  const discount = 100 - Math.round((100 * priceOffer) / priceNormal);
   return (
     <>
       <div className="flex items-center gap-2">
-        <span className="font-bold text-base">$ {formatPrice(priceSale)}</span>
+        <span className="font-bold text-base">$ {formatPrice(priceOffer)}</span>
         <span className="text-white py-0.5 px-1 bg-red-400 rounded text-xs">
           -{discount}%
         </span>
       </div>
       <span className="line-through text-gray-400 text-sm">
-        $ {formatPrice(price)}
+        $ {formatPrice(priceNormal)}
       </span>
     </>
   );
@@ -37,9 +39,9 @@ interface Props {
   data: {
     id: number;
     name: string;
-    urlImage: string | null;
-    price: number;
-    priceSale: number | null;
+    imageUrl: string | null;
+    priceNormal: number;
+    priceOffer: number | null;
   };
 }
 
@@ -59,12 +61,12 @@ const Component = ({ data }: Props) => {
               alt={data.name}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              src={data.urlImage ?? undefined}
+              src={data.imageUrl ?? undefined}
             />
           </a>
         </div>
         <span className="my-1 md:text-base/4">{data.id}</span>
-        <Price price={data.price} priceSale={data.priceSale} />
+        <Price priceNormal={data.priceNormal} priceOffer={data.priceOffer} />
       </div>
     </div>
   );

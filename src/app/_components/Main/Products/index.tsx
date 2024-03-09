@@ -5,9 +5,9 @@ interface Props {
   productsData: {
     id: number;
     name: string;
-    urlImage: string | null;
-    price: number;
-    priceSale: number | null;
+    imageUrl: string | null;
+    priceNormal: number;
+    priceOffer: number | null;
   }[];
 }
 

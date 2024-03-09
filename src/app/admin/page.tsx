@@ -4,17 +4,27 @@ import Product from './_components/Products/Product';
 import path from 'path';
 import nextConfig from '../../../next.config.mjs';
 import Products from './_components/Products';
+import { serverClient } from '../_trpc/serverClient';
 
 const Page = async () => {
-  const initialProducts = JSON.parse(
-    (
-      (await dropbox.filesDownload({ path: '/data.json' })).result as any
-    ).fileBinary.toString('utf-8')
-  );
+  const products = await serverClient.getProducts({
+    filterByName: '',
+    includeNoStore: true,
+    includeNoVisible: true,
+    minPrice: null,
+    maxPrice: null
+  });
 
-  const imageList = (
-    await dropbox.filesListFolder({ path: '/images' })
-  ).result.entries.map((result) => result.name);
+  const productsData = products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    imageUrl: product.image?.url || null,
+    priceNormal: product.priceNormal,
+    priceOffer: product.priceOffer,
+    visible: product.visible,
+    quantity: product.quantity,
+    id_image: product.id_image
+  }));
 
   return (
     <>
@@ -22,7 +32,7 @@ const Page = async () => {
       <a href={path.join(nextConfig.basePath, '/admin/uploadImage')}>
         Subir imagen
       </a>
-      <Products initialProducts={initialProducts} />
+      <Products initialProducts={productsData} />
     </>
   );
 };

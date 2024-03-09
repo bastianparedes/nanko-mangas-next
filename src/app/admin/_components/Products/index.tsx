@@ -10,12 +10,19 @@ import {
   rectSortingStrategy
 } from '@dnd-kit/sortable';
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
-import type { Product as TypeProduct } from '../../../../../types';
 import Product from './Product';
 
 interface Props {
-  initialProducts: TypeProduct[];
+  initialProducts: {
+    id: number;
+    name: string;
+    imageUrl: string | null;
+    priceNormal: number;
+    priceOffer: number | null;
+    visible: boolean;
+    quantity: number;
+    id_image: number | null;
+  }[];
 }
 
 const Component = ({ initialProducts }: Props) => {

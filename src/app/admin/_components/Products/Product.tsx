@@ -2,7 +2,6 @@
 // import Image from 'next/image';
 import path from 'path';
 import nextConfig from '../../../../../next.config.mjs';
-import type { Product } from '../../../../../types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -10,34 +9,45 @@ const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 const Price = ({
-  price,
-  priceSale
+  priceNormal,
+  priceOffer
 }: {
-  price: Product['price'];
-  priceSale: Product['priceSale'];
+  priceNormal: number;
+  priceOffer: number | null;
 }) => {
-  if (priceSale === null) {
-    return <span className="font-bold text-base">$ {formatPrice(price)}</span>;
+  if (priceOffer === null) {
+    return (
+      <span className="font-bold text-base">$ {formatPrice(priceNormal)}</span>
+    );
   }
 
-  const discount = 100 - Math.round((100 * priceSale) / price);
+  const discount = 100 - Math.round((100 * priceOffer) / priceNormal);
   return (
     <>
       <div className="flex items-center gap-2">
-        <span className="font-bold text-base">$ {formatPrice(priceSale)}</span>
+        <span className="font-bold text-base">$ {formatPrice(priceOffer)}</span>
         <span className="text-white py-0.5 px-1 bg-red-400 rounded text-xs">
           -{discount}%
         </span>
       </div>
       <span className="line-through text-gray-400 text-sm">
-        $ {formatPrice(price)}
+        $ {formatPrice(priceNormal)}
       </span>
     </>
   );
 };
 
 interface Props {
-  data: Product;
+  data: {
+    id: number;
+    name: string;
+    imageUrl: string | null;
+    priceNormal: number;
+    priceOffer: number | null;
+    visible: boolean;
+    quantity: number;
+    id_image: number | null;
+  };
 }
 
 const Component = ({ data }: Props) => {
@@ -58,14 +68,18 @@ const Component = ({ data }: Props) => {
       <div className="flex justify-start flex-col w-52 md:w-32">
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
           <img
-            alt={data.id}
+            alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={path.join(nextConfig.basePath, '/api/image', data.image)}
+            src={
+              data.imageUrl !== null
+                ? path.join(nextConfig.basePath, '/api/image', data.imageUrl)
+                : undefined
+            }
           />
         </div>
         <span className="my-1 md:text-base/4">{data.id}</span>
-        <Price price={data.price} priceSale={data.priceSale} />
+        <Price priceNormal={data.priceNormal} priceOffer={data.priceOffer} />
       </div>
     </div>
   );
