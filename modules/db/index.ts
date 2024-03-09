@@ -130,8 +130,8 @@ const getProducts = async ({
   filterByName: string;
   includeNoStore: boolean;
   includeNoVisible: boolean;
-  minPrice: number;
-  maxPrice: number;
+  minPrice: number | null;
+  maxPrice: number | null;
 }) => {
   const { Product } = schema;
   const response = await db.query.Product.findMany({
@@ -139,8 +139,18 @@ const getProducts = async ({
       !includeNoVisible ? eq(Product.visible, true) : undefined,
       !includeNoStore ? gt(Product.quantity, 0) : undefined,
       ilike(Product.name, '%' + filterByName.trim().split('').join('%') + '%'),
-      or(gte(Product.priceNormal, minPrice), gte(Product.priceOffer, minPrice)),
-      or(lte(Product.priceNormal, maxPrice), lte(Product.priceOffer, maxPrice))
+      minPrice !== null
+        ? or(
+            gte(Product.priceNormal, minPrice),
+            gte(Product.priceOffer, minPrice)
+          )
+        : undefined,
+      maxPrice !== null
+        ? or(
+            lte(Product.priceNormal, maxPrice),
+            lte(Product.priceOffer, maxPrice)
+          )
+        : undefined
     ),
     with: {
       image: {

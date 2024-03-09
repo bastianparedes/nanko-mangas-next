@@ -33,8 +33,8 @@ const appRouter = router({
         filterByName: z.string(),
         includeNoStore: z.boolean(),
         includeNoVisible: z.boolean(),
-        minPrice: z.number(),
-        maxPrice: z.number()
+        minPrice: z.union([z.number().int().nonnegative(), z.null()]),
+        maxPrice: z.union([z.number().int().nonnegative(), z.null()])
       })
     )
     .query(async ({ input }) => await getProducts(input))

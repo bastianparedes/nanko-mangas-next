@@ -2,7 +2,6 @@
 // import Image from 'next/image';
 import path from 'path';
 import nextConfig from '../../../../../next.config.mjs';
-import type { Product } from '../../../../../types';
 
 const formatPrice = (number: number) =>
   number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -11,8 +10,8 @@ const Price = ({
   price,
   priceSale
 }: {
-  price: Product['price'];
-  priceSale: Product['priceSale'];
+  price: number;
+  priceSale: number | null;
 }) => {
   if (priceSale === null) {
     return <span className="font-bold text-base">$ {formatPrice(price)}</span>;
@@ -35,7 +34,13 @@ const Price = ({
 };
 
 interface Props {
-  data: Product;
+  data: {
+    id: number;
+    name: string;
+    urlImage: string | null;
+    price: number;
+    priceSale: number | null;
+  };
 }
 
 const Component = ({ data }: Props) => {
@@ -46,15 +51,15 @@ const Component = ({ data }: Props) => {
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
           <a
             className="w-full h-full"
-            href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola Nanko Mangas!, quiero comprar "${data.id}"`}
+            href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola Nanko Mangas!, quiero comprar "${data.name}"`}
             rel="noopener noreferrer"
             target="_blank"
           >
             <img
-              alt={data.id}
+              alt={data.name}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              src={path.join(nextConfig.basePath, '/api/image', data.image)}
+              src={data.urlImage ?? undefined}
             />
           </a>
         </div>

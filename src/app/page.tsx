@@ -5,14 +5,24 @@ import Hero from './_components/Main/Hero';
 import Contact from './_components/Main/Contact';
 import Products from './_components/Main/Products';
 import Footer from './_components/Footer';
-import db from 
+import { serverClient } from './_trpc/serverClient';
 
 const Page = async () => {
-  const response = await dropbox.filesDownload({ path: '/data.json' });
+  const products = await serverClient.getProducts({
+    filterByName: '',
+    includeNoStore: false,
+    includeNoVisible: false,
+    minPrice: 0,
+    maxPrice: 99999
+  });
 
-  const contenidoBuffer = (response.result as any).fileBinary;
-  const contenidoString = contenidoBuffer.toString('utf-8');
-  const productsData = JSON.parse(contenidoString);
+  const productsData = products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    urlImage: product.image?.url || null,
+    price: product.priceNormal,
+    priceSale: product.priceOffer
+  }));
 
   return (
     <>
