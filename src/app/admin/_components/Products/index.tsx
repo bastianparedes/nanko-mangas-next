@@ -30,7 +30,11 @@ interface Props {
 
 const Component = ({ initialProducts }: Props) => {
   const [products, setProducts] = useState(initialProducts);
-  const insertProduct = trpcClient.insertProduct.useMutation();
+  const insertProduct = trpcClient.insertProduct.useMutation({
+    onSettled(data, error, variables, context) {
+      console.log({ data, error, variables, context });
+    }
+  });
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (over === null || active.id === over.id) return;
@@ -46,7 +50,7 @@ const Component = ({ initialProducts }: Props) => {
 
   const createProduct = () => {
     insertProduct.mutate({
-      name: 'Nuevo manga',
+      name: 'New manga',
       priceNormal: 0,
       priceOffer: null,
       visible: false,

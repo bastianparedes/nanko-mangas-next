@@ -44,7 +44,7 @@ const appRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      await insertProduct({
+      return await insertProduct({
         name: input.name,
         priceNormal: input.priceNormal,
         priceOffer: input.priceOffer,
@@ -53,7 +53,9 @@ const appRouter = router({
         id_image: input.id_image
       });
     }),
-  getImages: publicProcedure.query(async () => await getImages()),
+  getImages: publicProcedure.query(async () => {
+    return await getImages();
+  }),
   getProducts: publicProcedure
     .input(
       z.object({
