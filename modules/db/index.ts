@@ -20,69 +20,63 @@ const insertImage = async ({
   descriptiveName: string;
   file: File;
 }) => {
-  const descriptiveNameIsFree =
-    (await db.query.Image.findFirst({
-      where: eq(schema.Image.descriptiveName, descriptiveName)
-    })) === undefined;
+  try {
+    await db.transaction(async (tx) => {
+      try {
+        const uuid = crypto.randomUUID();
+        const name = uuid + '.webp';
 
-  if (!descriptiveNameIsFree)
-    return {
-      success: false
-    };
+        const arrayBuffer = await file.arrayBuffer();
 
-  return await db.transaction(async (tx) => {
-    try {
-      const uuid = crypto.randomUUID();
-      const name = uuid + '.webp';
+        const buffer = await sharp(arrayBuffer)
+          .resize(200, 323, {
+            fit: 'cover'
+          })
+          .webp({ lossless: false })
+          .toBuffer();
 
-      const arrayBuffer = await file.arrayBuffer();
+        const fullName = path.join('/images', name).replaceAll('\\', '/');
 
-      const buffer = await sharp(arrayBuffer)
-        .resize(200, 323, {
-          fit: 'cover'
-        })
-        .webp({ lossless: false })
-        .toBuffer();
+        await fileSystem.filesUpload({
+          path: fullName,
+          contents: buffer
+        });
 
-      const fullName = path.join('/images', name).replaceAll('\\', '/');
+        const sharedLink = (
+          await fileSystem.sharingCreateSharedLinkWithSettings({
+            path: fullName
+          })
+        ).result.url;
+        const url = new URL(sharedLink);
+        url.hostname = url.hostname.replace(/^www\./, 'dl.');
 
-      await fileSystem.filesUpload({
-        path: fullName,
-        contents: buffer
-      });
+        await db.insert(schema.Image).values({
+          descriptiveName: descriptiveName,
+          storedName: name,
+          url: url.toString()
+        });
+      } catch (_error) {
+        // console.log('ERROR AL SUBIR ARCHIVO', _error);
+        tx.rollback();
 
-      const sharedLink = (
-        await fileSystem.sharingCreateSharedLinkWithSettings({
-          path: fullName
-        })
-      ).result.url;
-      const url = new URL(sharedLink);
-      url.hostname = url.hostname.replace(/^www\./, 'dl.');
+        return {
+          success: false
+        };
+      }
+    });
+  } catch {
+    return { success: false };
+  }
 
-      await db.insert(schema.Image).values({
-        descriptiveName: descriptiveName,
-        storedName: name,
-        url: url.toString()
-      });
-    } catch (_error) {
-      // console.log('ERROR AL SUBIR ARCHIVO', _error);
-      tx.rollback();
-
-      return {
-        success: false
-      };
-    }
-
-    return {
-      success: true
-    };
-  });
+  return {
+    success: true
+  };
 };
 
 const insertProduct = async (values: {
   name: string;
   priceNormal: number;
-  priceOffer: number | null | undefined;
+  priceOffer: number | null;
   visible: boolean;
   quantity: number;
   id_image: number;
@@ -100,24 +94,10 @@ const insertProduct = async (values: {
   };
 };
 
-const updateProduct = async (
-  id: number,
-  values: {
-    id: number;
-    name: string;
-    priceNormal: number;
-    priceOffer: number | null | undefined;
-    visible: boolean;
-    quantity: number;
-    id_image: number;
-  }
-) => {
-  await db
-    .update(schema.Product)
-    .set({
-      quantity: 0
-    })
-    .where(eq(schema.Product.id, values.id));
+const getImages = async () => {
+  const images = await db.query.Image.findMany();
+
+  return images;
 };
 
 const getProducts = async ({
@@ -164,11 +144,46 @@ const getProducts = async ({
   return response;
 };
 
-const getImages = async () => {
-  const images = await db.query.Image.findMany();
-
-  return images;
+const updateImage = async (
+  id: number,
+  values: { descriptiveName?: string }
+) => {
+  try {
+    await db.update(schema.Image).set(values).where(eq(schema.Image.id, id));
+  } catch {
+    return { success: false };
+  }
+  return { success: true };
 };
 
-export { insertImage, insertProduct, updateProduct, getProducts, getImages };
+const updateProduct = async (
+  id: number,
+  values: {
+    name?: string;
+    priceNormal?: number;
+    priceOffer?: number | null;
+    visible?: boolean;
+    quantity?: number;
+    id_image?: number;
+  }
+) => {
+  try {
+    await db
+      .update(schema.Product)
+      .set(values)
+      .where(eq(schema.Product.id, id));
+  } catch {
+    return { success: false };
+  }
+  return { success: true };
+};
+
+export {
+  insertImage,
+  insertProduct,
+  getImages,
+  getProducts,
+  updateImage,
+  updateProduct
+};
 export default db;
