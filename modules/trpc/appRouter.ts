@@ -10,7 +10,6 @@ import {
   deleteProduct
 } from '../db';
 import sendMail from '../mail';
-
 import { initTRPC } from '@trpc/server';
 
 const t = initTRPC.create();
@@ -40,7 +39,7 @@ const appRouter = router({
         priceOffer: z.union([z.number().int().nonnegative(), z.null()]),
         visible: z.boolean(),
         quantity: z.number().int().nonnegative(),
-        id_image: z.union([z.number().int().nonnegative(), z.null()])
+        idImage: z.union([z.number().int().nonnegative(), z.null()])
       })
     )
     .mutation(async ({ input }) => {
@@ -50,23 +49,44 @@ const appRouter = router({
         priceOffer: input.priceOffer,
         visible: input.visible,
         quantity: input.quantity,
-        id_image: input.id_image
+        idImage: input.idImage
       });
     }),
-  getImages: publicProcedure.query(async () => {
-    return await getImages();
-  }),
+  getImages: publicProcedure
+    .input(
+      z.object({
+        columns: z.enum(['descriptiveName', 'id', 'storedName', 'url']).array()
+      })
+    )
+    .query(async ({ input }) => {
+      input.columns;
+      return await getImages(input.columns);
+    }),
   getProducts: publicProcedure
     .input(
       z.object({
-        filterByName: z.string(),
-        includeNoStore: z.boolean(),
-        includeNoVisible: z.boolean(),
-        minPrice: z.union([z.number().int().nonnegative(), z.null()]),
-        maxPrice: z.union([z.number().int().nonnegative(), z.null()])
+        columns: z
+          .enum([
+            'id',
+            'name',
+            'priceNormal',
+            'priceOffer',
+            'visible',
+            'quantity',
+            'idImage',
+            'urlImage'
+          ])
+          .array(),
+        config: z.object({
+          filterByName: z.string(),
+          includeNoStore: z.boolean(),
+          includeNoVisible: z.boolean(),
+          minPrice: z.union([z.number().int().nonnegative(), z.null()]),
+          maxPrice: z.union([z.number().int().nonnegative(), z.null()])
+        })
       })
     )
-    .query(async ({ input }) => await getProducts(input)),
+    .query(async ({ input }) => await getProducts(input.columns, input.config)),
   updateImage: publicProcedure
     .input(
       z.object({
@@ -87,7 +107,7 @@ const appRouter = router({
             .optional(),
           visible: z.boolean().optional(),
           quantity: z.number().int().nonnegative().optional(),
-          id_image: z.number().optional()
+          idImage: z.number().optional()
         })
       })
     )

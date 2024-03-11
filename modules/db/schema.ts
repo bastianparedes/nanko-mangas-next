@@ -21,12 +21,12 @@ export const Product = pgTable('Product', {
   priceOffer: integer('priceOffer'),
   visible: boolean('visible').notNull(),
   quantity: integer('quantity').notNull(),
-  id_image: integer('id_image').references(() => Image.id)
+  idImage: integer('idImage').references(() => Image.id)
 });
 
 export const ProductRelations = relations(Product, ({ one }) => ({
   image: one(Image, {
-    fields: [Product.id_image],
+    fields: [Product.idImage],
     references: [Image.id]
   })
 }));

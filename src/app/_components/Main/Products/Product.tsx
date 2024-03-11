@@ -37,7 +37,7 @@ interface Props {
   data: {
     id: number;
     name: string;
-    imageUrl: string | null;
+    urlImage: string | null;
     priceNormal: number;
     priceOffer: number | null;
   };
@@ -59,7 +59,7 @@ const Component = ({ data }: Props) => {
               alt={data.name}
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
-              src={data.imageUrl ?? imageNotFound}
+              src={data.urlImage ?? imageNotFound}
             />
           </a>
         </div>
