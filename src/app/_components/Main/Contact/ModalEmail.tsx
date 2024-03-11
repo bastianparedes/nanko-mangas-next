@@ -3,11 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Email from '../../icons/Email';
 import X from '../../icons/X';
+import { trpcClient } from '../../../../../modules/trpc/client';
 
 const Component = () => {
   const [message, setMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const sendMail = trpcClient.sendMail.useMutation();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -18,14 +21,7 @@ const Component = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    await fetch('/api/sendMail', {
-      body: JSON.stringify({
-        message
-      }),
-      method: 'POST'
-    });
-
+    sendMail.mutate(message);
     closeModal();
   };
 
