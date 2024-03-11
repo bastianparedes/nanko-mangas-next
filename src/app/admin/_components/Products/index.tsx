@@ -20,11 +20,9 @@ interface Props {
     priceOffer: number | null;
     visible: boolean;
     quantity: number;
-    id_image: number | null;
+    idImage: number | null;
     id: number;
-    image: {
-      url: string;
-    } | null;
+    urlImage: string | null;
   }[];
 }
 
@@ -55,7 +53,7 @@ const Component = ({ initialProducts }: Props) => {
       priceOffer: null,
       visible: false,
       quantity: 0,
-      id_image: null
+      idImage: null
     });
   };
 

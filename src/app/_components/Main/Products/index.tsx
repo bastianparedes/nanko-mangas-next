@@ -5,7 +5,7 @@ interface Props {
   productsData: {
     id: number;
     name: string;
-    imageUrl: string | null;
+    urlImage: string | null;
     priceNormal: number;
     priceOffer: number | null;
   }[];

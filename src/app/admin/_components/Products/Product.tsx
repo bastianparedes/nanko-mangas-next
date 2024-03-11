@@ -10,11 +10,9 @@ interface Props {
     priceOffer: number | null;
     visible: boolean;
     quantity: number;
-    id_image: number | null;
+    idImage: number | null;
     id: number;
-    image: {
-      url: string;
-    } | null;
+    urlImage: string | null;
   };
 }
 
@@ -39,7 +37,7 @@ const Component = ({ data }: Props) => {
             alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={data.image?.url ?? imageNotFound}
+            src={data.urlImage ?? imageNotFound}
           />
         </div>
         <span className="my-1 md:text-base/4">Name: {data.name}</span>

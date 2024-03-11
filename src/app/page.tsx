@@ -19,7 +19,7 @@ const Page = async () => {
   const productsData = products.map((product) => ({
     id: product.id,
     name: product.name,
-    imageUrl: product.image?.url || null,
+    urlImage: product.urlImage,
     priceNormal: product.priceNormal,
     priceOffer: product.priceOffer
   }));

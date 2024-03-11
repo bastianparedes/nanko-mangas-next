@@ -14,12 +14,12 @@ CREATE TABLE IF NOT EXISTS "Product" (
 	"priceOffer" integer,
 	"visible" boolean NOT NULL,
 	"quantity" integer NOT NULL,
-	"id_image" integer,
+	"idImage" integer,
 	CONSTRAINT "Product_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "Product" ADD CONSTRAINT "Product_id_image_Image_id_fk" FOREIGN KEY ("id_image") REFERENCES "Image"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "Product" ADD CONSTRAINT "Product_idImage_Image_id_fk" FOREIGN KEY ("idImage") REFERENCES "Image"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
