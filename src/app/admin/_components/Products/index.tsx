@@ -10,7 +10,6 @@ interface Props {
     priceNormal: number;
     priceOffer: number | null;
     visible: boolean;
-    quantity: number;
     idImage: number | null;
     id: number;
   }[];
@@ -40,7 +39,6 @@ const Component = ({ initialProducts, images }: Props) => {
       priceNormal: 0,
       priceOffer: null,
       visible: false,
-      quantity: 0,
       idImage: null
     });
   };

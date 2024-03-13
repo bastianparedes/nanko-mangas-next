@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import imageNotFound from '../../../../../resources/images/not-found.webp';
 import Select from 'react-select';
+import { trpcClient } from '../../../../../modules/trpc/client';
 
 interface Props {
   initialData: {
@@ -11,7 +12,6 @@ interface Props {
     priceNormal: number;
     priceOffer: number | null;
     visible: boolean;
-    quantity: number;
     idImage: number | null;
     id: number;
   };
@@ -28,11 +28,12 @@ const Component = ({ initialData, images }: Props) => {
     data.idImage !== null
       ? images.find((image) => image.id === data.id)?.url ?? null
       : null;
+  const updateProduct = trpcClient.updateProduct.useMutation();
 
   return (
     <div className="w-auto h-auto flex justify-center">
       <div className="flex justify-start flex-col w-52 gap-5 md:w-32">
-        <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
+        <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden relative">
           <Image
             alt={data.name}
             className="w-full h-full object-cover"
@@ -52,30 +53,62 @@ const Component = ({ initialData, images }: Props) => {
             setData({ ...data, idImage: event?.value ?? null })
           }
         />
+        <div className="flex gap-5">
+          <input
+            type="checkbox"
+            onClick={() => setData({ ...data, visible: !data.visible })}
+          />
+          <span>{data.visible ? 'Visible' : 'No visible'}</span>
+        </div>
         <input
           type="text"
+          className="border-black border-2"
           value={data.name}
           placeholder="Name"
           onChange={(event) => setData({ ...data, name: event.target.value })}
         />
         <input
           type="number"
+          className="border-black border-2"
           value={data.priceNormal}
           placeholder="Normal price"
           onChange={(event) =>
-            setData({ ...data, priceNormal: Number(event.target.value) })
+            setData({
+              ...data,
+              priceOffer: Math.max(0, Number(event.target.value))
+            })
           }
         />
         {data.priceOffer !== null && (
           <input
             type="number"
+            className="border-black border-2"
             defaultValue={data.priceOffer}
             placeholder="Offer price"
             onChange={(event) =>
-              setData({ ...data, priceOffer: Number(event.target.value) })
+              setData({
+                ...data,
+                priceOffer: Math.max(0, Number(event.target.value))
+              })
             }
           />
         )}
+        <button
+          onClick={() =>
+            updateProduct.mutate({
+              values: {
+                name: data.name,
+                priceNormal: data.priceNormal,
+                priceOffer: data.priceOffer,
+                visible: data.visible,
+                idImage: data.idImage
+              },
+              id: data.id
+            })
+          }
+        >
+          Save
+        </button>
       </div>
     </div>
   );

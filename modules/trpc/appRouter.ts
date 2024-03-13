@@ -38,7 +38,6 @@ const appRouter = router({
         priceNormal: z.number().int().nonnegative(),
         priceOffer: z.union([z.number().int().nonnegative(), z.null()]),
         visible: z.boolean(),
-        quantity: z.number().int().nonnegative(),
         idImage: z.union([z.number().int().nonnegative(), z.null()])
       })
     )
@@ -48,7 +47,6 @@ const appRouter = router({
         priceNormal: input.priceNormal,
         priceOffer: input.priceOffer,
         visible: input.visible,
-        quantity: input.quantity,
         idImage: input.idImage
       });
     }),
@@ -72,7 +70,6 @@ const appRouter = router({
             'priceNormal',
             'priceOffer',
             'visible',
-            'quantity',
             'idImage',
             'urlImage'
           ])
@@ -106,8 +103,7 @@ const appRouter = router({
             .union([z.number().int().nonnegative(), z.null()])
             .optional(),
           visible: z.boolean().optional(),
-          quantity: z.number().int().nonnegative().optional(),
-          idImage: z.number().optional()
+          idImage: z.union([z.number(), z.null()]).optional()
         })
       })
     )

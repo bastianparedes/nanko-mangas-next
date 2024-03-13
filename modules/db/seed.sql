@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS "Product" (
 	"priceNormal" integer NOT NULL,
 	"priceOffer" integer,
 	"visible" boolean NOT NULL,
-	"quantity" integer NOT NULL,
 	"idImage" integer,
 	CONSTRAINT "Product_id_unique" UNIQUE("id")
 );

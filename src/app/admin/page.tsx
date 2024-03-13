@@ -8,15 +8,7 @@ import { serverClient } from '../../../modules/trpc/serverClient';
 
 const Page = async () => {
   const products = await serverClient.getProducts({
-    columns: [
-      'name',
-      'priceNormal',
-      'priceOffer',
-      'visible',
-      'quantity',
-      'idImage',
-      'id'
-    ],
+    columns: ['name', 'priceNormal', 'priceOffer', 'visible', 'idImage', 'id'],
     config: {
       filterByName: '',
       includeNoStore: true,

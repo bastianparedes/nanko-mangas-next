@@ -20,7 +20,6 @@ export const Product = pgTable('Product', {
   priceNormal: integer('priceNormal').notNull(),
   priceOffer: integer('priceOffer'),
   visible: boolean('visible').notNull(),
-  quantity: integer('quantity').notNull(),
   idImage: integer('idImage').references(() => Image.id)
 });
 

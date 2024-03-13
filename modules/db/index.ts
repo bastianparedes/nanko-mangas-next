@@ -65,7 +65,6 @@ const insertProduct = async (values: {
   priceNormal: number;
   priceOffer: number | null;
   visible: boolean;
-  quantity: number;
   idImage: number | null;
 }) => {
   const data = await db.insert(schema.Product).values(values).returning();
@@ -108,7 +107,6 @@ const getProducts = async (
     priceNormal: schema.Product.priceNormal,
     priceOffer: schema.Product.priceOffer,
     visible: schema.Product.visible,
-    quantity: schema.Product.quantity,
     idImage: schema.Product.idImage,
     urlImage: schema.Image.url
   };
@@ -121,7 +119,6 @@ const getProducts = async (
     .where(
       and(
         !config.includeNoVisible ? eq(schema.Product.visible, true) : undefined,
-        !config.includeNoStore ? gt(schema.Product.quantity, 0) : undefined,
         ilike(
           schema.Product.name,
           '%' + config.filterByName.trim().split('').join('%') + '%'
@@ -163,8 +160,7 @@ const updateProduct = async (
     priceNormal?: number;
     priceOffer?: number | null;
     visible?: boolean;
-    quantity?: number;
-    idImage?: number;
+    idImage?: number | null;
   }
 ) => {
   return await db
