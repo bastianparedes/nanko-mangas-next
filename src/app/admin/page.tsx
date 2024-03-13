@@ -14,7 +14,8 @@ const Page = async () => {
       includeNoStore: true,
       includeNoVisible: true,
       minPrice: null,
-      maxPrice: null
+      maxPrice: null,
+      includeNoUrl: true
     }
   });
 

@@ -1,4 +1,4 @@
-import { and, eq, gt, gte, ilike, lte, or } from 'drizzle-orm';
+import { and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import fileSystem from '../fileSystem';
@@ -93,12 +93,14 @@ const getProducts = async (
     includeNoVisible: boolean;
     minPrice: number | null;
     maxPrice: number | null;
+    includeNoUrl: boolean;
   } = {
     filterByName: '',
     includeNoStore: false,
     includeNoVisible: true,
     minPrice: -Infinity,
-    maxPrice: Infinity
+    maxPrice: Infinity,
+    includeNoUrl: false
   }
 ) => {
   const schemaColumns = {
@@ -134,13 +136,12 @@ const getProducts = async (
               lte(schema.Product.priceNormal, config.maxPrice),
               lte(schema.Product.priceOffer, config.maxPrice)
             )
-          : undefined
+          : undefined,
+        config.includeNoUrl ? undefined : isNotNull(schema.Product.idImage)
       )
     )
     .leftJoin(schema.Image, eq(schema.Product.idImage, schema.Image.id));
 };
-
-type a = Parameters<typeof getProducts>[0];
 
 const updateImage = async (
   id: number,

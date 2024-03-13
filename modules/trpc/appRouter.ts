@@ -79,7 +79,8 @@ const appRouter = router({
           includeNoStore: z.boolean(),
           includeNoVisible: z.boolean(),
           minPrice: z.union([z.number().int().nonnegative(), z.null()]),
-          maxPrice: z.union([z.number().int().nonnegative(), z.null()])
+          maxPrice: z.union([z.number().int().nonnegative(), z.null()]),
+          includeNoUrl: z.boolean()
         })
       })
     )

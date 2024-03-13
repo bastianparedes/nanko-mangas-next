@@ -9,7 +9,4 @@ const serverClient = appRouter.createCaller({
   ]
 });
 
-type a = Awaited<ReturnType<(typeof serverClient)['getProducts']>>;
-let b: a;
-
 export { serverClient };
