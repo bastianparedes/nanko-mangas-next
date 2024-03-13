@@ -17,20 +17,6 @@ const router = t.router;
 const publicProcedure = t.procedure;
 
 const appRouter = router({
-  insertImage: publicProcedure
-    .input(
-      z.object({
-        file: z.instanceof(File),
-        descriptiveName: z.string()
-      })
-    )
-    .mutation(
-      async (options) =>
-        await insertImage({
-          file: options.input.file,
-          descriptiveName: options.input.descriptiveName
-        })
-    ),
   insertProduct: publicProcedure
     .input(
       z.object({

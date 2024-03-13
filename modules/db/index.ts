@@ -1,4 +1,4 @@
-import { asc, desc, and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
+import { desc, and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import fileSystem from '../fileSystem';
@@ -82,7 +82,10 @@ const getImages = async (
   };
 
   const selectedColumns = filterObject(schemaColumns, columns);
-  return await db.select(selectedColumns).from(schema.Image);
+  return await db
+    .select(selectedColumns)
+    .from(schema.Image)
+    .orderBy(desc(schema.Image.id));
 };
 
 const getProducts = async (
