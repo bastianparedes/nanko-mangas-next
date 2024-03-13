@@ -1,4 +1,4 @@
-import { and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
+import { asc, desc, and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import fileSystem from '../fileSystem';
@@ -118,6 +118,7 @@ const getProducts = async (
   return await db
     .select(selectedColumns)
     .from(schema.Product)
+    .orderBy(desc(schema.Product.id))
     .where(
       and(
         !config.includeNoVisible ? eq(schema.Product.visible, true) : undefined,

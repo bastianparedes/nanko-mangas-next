@@ -60,10 +60,12 @@ const Component = ({ data }: Props) => {
               className="w-full h-full object-cover duration-[400ms] ease-in-out hover:scale-[1.2] md:hover:scale-[initial]"
               loading="lazy"
               src={data.urlImage ?? imageNotFound}
+              width={208}
+              height={334}
             />
           </a>
         </div>
-        <span className="my-1 md:text-base/4">{data.id}</span>
+        <span className="my-1 md:text-base/4">{data.name}</span>
         <Price priceNormal={data.priceNormal} priceOffer={data.priceOffer} />
       </div>
     </div>
