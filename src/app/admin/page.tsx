@@ -15,8 +15,7 @@ const Page = async () => {
       'visible',
       'quantity',
       'idImage',
-      'id',
-      'urlImage'
+      'id'
     ],
     config: {
       filterByName: '',
@@ -27,13 +26,17 @@ const Page = async () => {
     }
   });
 
+  const images = await serverClient.getImages({
+    columns: ['id', 'descriptiveName', 'url']
+  });
+
   return (
     <>
       <CloserSession />
       <a href={path.join(nextConfig.basePath, '/admin/uploadImage')}>
         Upload image
       </a>
-      <Products initialProducts={products} />
+      <Products initialProducts={products} images={images} />
     </>
   );
 };

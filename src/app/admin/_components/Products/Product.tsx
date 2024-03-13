@@ -1,8 +1,11 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import imageNotFound from '../../../../../resources/images/not-found.webp';
 
 interface Props {
-  data: {
+  initialData: {
     name: string;
     priceNormal: number;
     priceOffer: number | null;
@@ -10,11 +13,21 @@ interface Props {
     quantity: number;
     idImage: number | null;
     id: number;
-    urlImage: string | null;
   };
+  images: {
+    id: number;
+    descriptiveName: string;
+    url: string;
+  }[];
 }
 
-const Component = ({ data }: Props) => {
+const Component = ({ initialData, images }: Props) => {
+  const [data, setData] = useState(initialData);
+  const urlImage =
+    data.idImage !== null
+      ? images.find((image) => image.id === data.id)?.url ?? null
+      : null;
+
   return (
     <div className="w-auto h-auto flex justify-center">
       <div className="flex justify-start flex-col w-52 md:w-32">
@@ -23,16 +36,30 @@ const Component = ({ data }: Props) => {
             alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
-            src={data.urlImage ?? imageNotFound}
+            src={urlImage ?? imageNotFound}
           />
         </div>
-        <span className="my-1 md:text-base/4">Name: {data.name}</span>
-        <span className="my-1 md:text-base/4">
-          Normal price: {data.priceNormal}
-        </span>
-        <span className="my-1 md:text-base/4">
-          Normal offer: {String(data.priceOffer)}
-        </span>
+        <select onChange={console.log}>
+          <option value={String(null)}>None</option>
+          {images.map((image) => (
+            <option value={image.url} key={image.id}>
+              {image.descriptiveName}
+            </option>
+          ))}
+        </select>
+        <input type="text" defaultValue={data.name} placeholder="Name" />
+        <input
+          type="number"
+          defaultValue={data.priceNormal}
+          placeholder="Normal price"
+        />
+        {data.priceOffer !== null && (
+          <input
+            type="number"
+            defaultValue={data.priceOffer}
+            placeholder="Offer price"
+          />
+        )}
       </div>
     </div>
   );

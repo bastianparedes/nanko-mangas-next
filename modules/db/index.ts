@@ -43,23 +43,20 @@ const insertImage = async (values: { descriptiveName: string; file: File }) => {
       const url = new URL(sharedLink);
       url.hostname = url.hostname.replace(/^www\./, 'dl.');
 
-      await db.insert(schema.Image).values({
-        descriptiveName: values.descriptiveName,
-        storedName: name,
-        url: url.toString()
-      });
+      return (
+        await db
+          .insert(schema.Image)
+          .values({
+            descriptiveName: values.descriptiveName,
+            storedName: name,
+            url: url.toString()
+          })
+          .returning()
+      )[0];
     } catch (_error) {
       // console.log('ERROR AL SUBIR ARCHIVO', _error);
       tx.rollback();
-
-      return {
-        success: false
-      };
     }
-
-    return {
-      success: true
-    };
   });
 };
 
@@ -71,18 +68,8 @@ const insertProduct = async (values: {
   quantity: number;
   idImage: number | null;
 }) => {
-  try {
-    const data = await db.insert(schema.Product).values(values).returning();
-    return {
-      data,
-      success: true
-    };
-  } catch {
-    return {
-      data: null,
-      success: false
-    };
-  }
+  const data = await db.insert(schema.Product).values(values).returning();
+  return data[0];
 };
 
 const getImages = async (
@@ -162,19 +149,11 @@ const updateImage = async (
   id: number,
   values: { descriptiveName?: string }
 ) => {
-  try {
-    const data = await db
-      .update(schema.Image)
-      .set(values)
-      .where(eq(schema.Image.id, id))
-      .returning();
-    return {
-      data,
-      success: true
-    };
-  } catch {
-    return { data: null, success: false };
-  }
+  return await db
+    .update(schema.Image)
+    .set(values)
+    .where(eq(schema.Image.id, id))
+    .returning();
 };
 
 const updateProduct = async (
@@ -188,43 +167,25 @@ const updateProduct = async (
     idImage?: number;
   }
 ) => {
-  try {
-    const data = await db
-      .update(schema.Product)
-      .set(values)
-      .where(eq(schema.Product.id, id))
-      .returning();
-    return { data, success: true };
-  } catch {
-    return { data: null, success: false };
-  }
+  return await db
+    .update(schema.Product)
+    .set(values)
+    .where(eq(schema.Product.id, id))
+    .returning();
 };
 
 const deleteImage = async (id: number) => {
-  try {
-    const data = await db
-      .delete(schema.Image)
-      .where(eq(schema.Image.id, id))
-      .returning();
-    return { data, success: true };
-  } catch {
-    return { data: null, success: false };
-  }
+  return await db
+    .delete(schema.Image)
+    .where(eq(schema.Image.id, id))
+    .returning();
 };
 
 const deleteProduct = async (id: number) => {
-  try {
-    const data = await db
-      .delete(schema.Product)
-      .where(eq(schema.Product.id, id))
-      .returning();
-    return {
-      data,
-      success: true
-    };
-  } catch {
-    return { data: null, success: false };
-  }
+  return await db
+    .delete(schema.Product)
+    .where(eq(schema.Product.id, id))
+    .returning();
 };
 
 export {

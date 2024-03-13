@@ -13,19 +13,26 @@ interface Props {
     quantity: number;
     idImage: number | null;
     id: number;
-    urlImage: string | null;
+  }[];
+  images: {
+    id: number;
+    descriptiveName: string;
+    url: string;
   }[];
 }
 
-const Component = ({ initialProducts }: Props) => {
+const Component = ({ initialProducts, images }: Props) => {
   const [products, setProducts] = useState(initialProducts);
   const insertProduct = trpcClient.insertProduct.useMutation({
-    onSettled(data, error, variables, context) {
-      console.log({ data, error, variables, context });
+    onSettled(data, error) {
+      if (error !== null)
+        return window.alert('Hubo un error agregando un producto');
+      if (data === undefined)
+        return window.alert('Hubo un error agregando un producto');
+      const fullData = { ...data, urlImage: null };
+      setProducts((previousState) => [fullData, ...previousState]);
     }
   });
-
-  insertProduct.isLoading;
 
   const createProduct = () => {
     insertProduct.mutate({
@@ -41,10 +48,10 @@ const Component = ({ initialProducts }: Props) => {
   return (
     <div className="grid gap-12 mt-3 grid-cols-[repeat(auto-fill,_minmax(min(100%,_15rem),_1fr))] lg:gap-5 md:gap-2 md:grid-cols-[repeat(auto-fill,_minmax(min(100%,_7rem),_1fr))]">
       <button onClick={createProduct}>
-        <div className="w-52 h-52 bg-red-500" draggable={false}></div>
+        <div className="w-52 h-52 bg-red-500"></div>
       </button>
       {products.map((product) => (
-        <Product key={product.id} data={product} />
+        <Product key={product.id} initialData={product} images={images} />
       ))}
     </div>
   );
