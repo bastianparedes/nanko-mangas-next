@@ -33,7 +33,9 @@ const Component = ({ initialData, images }: Props) => {
   return (
     <div className="w-auto h-auto flex justify-center">
       <div className="flex justify-start flex-col w-52 gap-5 md:w-32">
-        <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden relative">
+        <div
+          className={`flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden relative  ${!data.visible ? 'opacity-20' : ''}`}
+        >
           <Image
             alt={data.name}
             className="w-full h-full object-cover"
