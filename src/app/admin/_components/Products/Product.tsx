@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import imageNotFound from '../../../../../resources/images/not-found.webp';
 
 interface Props {
@@ -17,20 +15,8 @@ interface Props {
 }
 
 const Component = ({ data }: Props) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: data.id });
-
   return (
-    <div
-      className="w-auto h-auto flex justify-center"
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition
-      }}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-    >
+    <div className="w-auto h-auto flex justify-center">
       <div className="flex justify-start flex-col w-52 md:w-32">
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
           <Image

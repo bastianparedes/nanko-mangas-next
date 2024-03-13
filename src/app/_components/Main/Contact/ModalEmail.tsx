@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Email from '../../icons/Email';
-import X from '../../icons/X';
+import { IoMdClose } from 'react-icons/io';
 import { trpcClient } from '../../../../../modules/trpc/client';
+import { IoIosMail } from 'react-icons/io';
 
 const Component = () => {
   const [message, setMessage] = useState('');
@@ -39,7 +39,7 @@ const Component = () => {
         className="text-[#2e2e2e] flex justify-center w-fit items-center md:m-auto"
         onClick={openModal}
       >
-        <Email />
+        <IoIosMail />
         <span className="text-lg">Enviar E-mail</span>
       </button>
       {isModalOpen && (
@@ -56,7 +56,7 @@ const Component = () => {
               className="rounded-full flex items-center justify-center text-3xl absolute top-0 right-0 bg-inherit border-black border-2 translate-x-1/2 -translate-y-1/2"
               onClick={closeModal}
             >
-              <X />
+              <IoMdClose />
             </button>
             <form
               className="flex flex-col justify-center gap-2"

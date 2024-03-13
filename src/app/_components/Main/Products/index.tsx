@@ -12,6 +12,7 @@ interface Props {
 }
 
 const Component = ({ productsData }: Props) => {
+  if (productsData.length === 0) return null;
   return (
     <section className="flex justify-center mt-7 px-2" id={ids.products}>
       <div className="pb-10 w-full">

@@ -1,14 +1,5 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
-// import Image from 'next/image';
-import { closestCenter, DndContext } from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  rectSortingStrategy
-} from '@dnd-kit/sortable';
 import { useState } from 'react';
 import Product from './Product';
 import { trpcClient } from '../../../../../modules/trpc/client';
@@ -34,17 +25,7 @@ const Component = ({ initialProducts }: Props) => {
     }
   });
 
-  const onDragEnd = ({ active, over }: DragEndEvent) => {
-    if (over === null || active.id === over.id) return;
-
-    setProducts((previousState) => {
-      const indexActive = previousState.findIndex(
-        (item) => item.id === active.id
-      );
-      const indexOver = previousState.findIndex((item) => item.id === over.id);
-      return arrayMove(previousState, indexActive, indexOver);
-    });
-  };
+  insertProduct.isLoading;
 
   const createProduct = () => {
     insertProduct.mutate({
@@ -59,20 +40,12 @@ const Component = ({ initialProducts }: Props) => {
 
   return (
     <div className="grid gap-12 mt-3 grid-cols-[repeat(auto-fill,_minmax(min(100%,_15rem),_1fr))] lg:gap-5 md:gap-2 md:grid-cols-[repeat(auto-fill,_minmax(min(100%,_7rem),_1fr))]">
-      <DndContext
-        collisionDetection={closestCenter}
-        onDragEnd={onDragEnd}
-        id={'DndContext'}
-      >
-        <SortableContext items={products} strategy={rectSortingStrategy}>
-          {products.map((product) => (
-            <Product key={product.id} data={product} />
-          ))}
-        </SortableContext>
-      </DndContext>
       <button onClick={createProduct}>
         <div className="w-52 h-52 bg-red-500" draggable={false}></div>
       </button>
+      {products.map((product) => (
+        <Product key={product.id} data={product} />
+      ))}
     </div>
   );
 };

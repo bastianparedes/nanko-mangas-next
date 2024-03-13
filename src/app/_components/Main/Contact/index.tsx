@@ -1,8 +1,6 @@
 import ids from '../../config/id';
 import ModalEmail from './ModalEmail';
-import Facebook from '../../icons/Facebook';
-import Instagram from '../../icons/Instagram';
-import Whatsapp from '../../icons/Whatsapp';
+import { FaFacebookSquare, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 
 const Component = () => {
   return (
@@ -32,7 +30,7 @@ const Component = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Instagram />
+              <FaInstagram />
               <span className="text-lg">Ver Instagram</span>
             </a>
             {process.env.PHONE_NUMBER !== undefined ? (
@@ -42,7 +40,7 @@ const Component = () => {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Whatsapp />
+                <FaWhatsapp />
                 <span className="text-lg">Ver WhatsApp</span>
               </a>
             ) : (
@@ -54,7 +52,7 @@ const Component = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Facebook />
+              <FaFacebookSquare />
               <span className="text-lg">Ver Facebook</span>
             </a>
           </div>
