@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import imageNotFound from '../../../../../resources/images/not-found.webp';
+import imageNotFound from '../../../../../../resources/images/not-found.webp';
 import Select from 'react-select';
-import { trpcClient } from '../../../../../modules/trpc/client';
+import { trpcClient } from '../../../../../../modules/trpc/client';
 
 interface Props {
   initialData: {
@@ -71,7 +71,7 @@ const Component = ({ initialData, images }: Props) => {
             checked={data.visible}
             onChange={() => setData({ ...data, visible: !data.visible })}
           />
-          <span>{data.visible ? 'Visible' : 'No visible'}</span>
+          <span>Visible</span>
         </div>
         <input
           type="text"
@@ -81,11 +81,16 @@ const Component = ({ initialData, images }: Props) => {
           onChange={(event) => setData({ ...data, name: event.target.value })}
         />
         <div className="flex flex-col">
-          <div>
+          <div className="flex gap-5">
             <input
               type="checkbox"
               checked={data.priceOffer !== null}
-              onChange={() => setData({ ...data, visible: !data.visible })}
+              onChange={() =>
+                setData({
+                  ...data,
+                  priceOffer: data.priceOffer === null ? 0 : null
+                })
+              }
             />
             <span>Show offer price</span>
           </div>
@@ -112,7 +117,7 @@ const Component = ({ initialData, images }: Props) => {
           onChange={(event) =>
             setData({
               ...data,
-              priceOffer: Math.max(0, Number(event.target.value))
+              priceNormal: Math.max(0, Number(event.target.value))
             })
           }
         />

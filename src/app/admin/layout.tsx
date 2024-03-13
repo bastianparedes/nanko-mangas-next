@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Urbanist } from 'next/font/google';
 import './globals.css';
-import { TrpcProvider } from './_context/TrpcProvider';
+import { TrpcProvider } from '../_context/TrpcProvider';
+import Nav from './_components/Nav';
 
 const urbanist = Urbanist({ subsets: ['latin'] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={urbanist.className}>
-        <TrpcProvider>{children}</TrpcProvider>
+        <TrpcProvider>
+          <Nav />
+          {children}
+        </TrpcProvider>
       </body>
     </html>
   );

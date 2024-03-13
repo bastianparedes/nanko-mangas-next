@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Product from './Product';
-import { trpcClient } from '../../../../../modules/trpc/client';
+import { trpcClient } from '../../../../../../modules/trpc/client';
 import { MdAddToPhotos } from 'react-icons/md';
 
 interface Props {
@@ -46,7 +46,7 @@ const Component = ({ initialProducts, images }: Props) => {
 
   return (
     <div className="grid gap-12 mt-3 grid-cols-[repeat(auto-fill,_minmax(min(100%,_15rem),_1fr))] lg:gap-5 md:gap-2 md:grid-cols-[repeat(auto-fill,_minmax(min(100%,_7rem),_1fr))]">
-      <div className="w-auto h-auto flex justify-center items-center">
+      <div className="w-auto h-auto flex justify-center items-start">
         <div className="p-5 border-2 border-gray-800 hover:border-black">
           <button
             onClick={createProduct}

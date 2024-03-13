@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Provider = ({ children }: Props) => {
+const TrpcProvider = ({ children }: Props) => {
   const [queryClient] = useState(() => new QueryClient({}));
   const [client] = useState(() =>
     trpcClient.createClient({
@@ -28,4 +28,4 @@ const Provider = ({ children }: Props) => {
   );
 };
 
-export { Provider };
+export { TrpcProvider };
