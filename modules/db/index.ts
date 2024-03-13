@@ -176,10 +176,35 @@ const updateProduct = async (
 };
 
 const deleteImage = async (id: number) => {
-  return await db
-    .delete(schema.Image)
-    .where(eq(schema.Image.id, id))
-    .returning();
+  return await db.transaction(async (tx) => {
+    try {
+      const imageIsUsed =
+        (await tx.query.Product.findFirst({
+          where: eq(schema.Product.idImage, id)
+        })) !== null;
+      if (imageIsUsed) return;
+
+      const image = await tx.query.Image.findFirst({
+        columns: {
+          storedName: true
+        }
+      });
+      if (image === undefined) return;
+
+      const imageFull = await tx
+        .delete(schema.Image)
+        .where(eq(schema.Image.id, id))
+        .returning();
+
+      await fileSystem.filesDeleteV2({
+        path: path.join('/images', image.storedName).replaceAll('\\', '/')
+      });
+
+      return imageFull;
+    } catch (_error) {
+      tx.rollback();
+    }
+  });
 };
 
 const deleteProduct = async (id: number) => {
