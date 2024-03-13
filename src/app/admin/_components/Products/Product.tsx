@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import imageNotFound from '../../../../../resources/images/not-found.webp';
+import Select from 'react-select';
 
 interface Props {
   initialData: {
@@ -30,34 +31,49 @@ const Component = ({ initialData, images }: Props) => {
 
   return (
     <div className="w-auto h-auto flex justify-center">
-      <div className="flex justify-start flex-col w-52 md:w-32">
+      <div className="flex justify-start flex-col w-52 gap-5 md:w-32">
         <div className="flex justify-center items-center aspect-[1/1.61] w-auto overflow-hidden">
           <Image
             alt={data.name}
             className="w-full h-full object-cover"
             loading="lazy"
             src={urlImage ?? imageNotFound}
+            width={208}
+            height={334}
           />
         </div>
-        <select onChange={console.log}>
-          <option value={String(null)}>None</option>
-          {images.map((image) => (
-            <option value={image.url} key={image.id}>
-              {image.descriptiveName}
-            </option>
-          ))}
-        </select>
-        <input type="text" defaultValue={data.name} placeholder="Name" />
+        <Select
+          instanceId="Select"
+          options={images.map((image) => ({
+            value: image.id,
+            label: image.descriptiveName
+          }))}
+          onChange={(event) =>
+            setData({ ...data, idImage: event?.value ?? null })
+          }
+        />
+        <input
+          type="text"
+          value={data.name}
+          placeholder="Name"
+          onChange={(event) => setData({ ...data, name: event.target.value })}
+        />
         <input
           type="number"
-          defaultValue={data.priceNormal}
+          value={data.priceNormal}
           placeholder="Normal price"
+          onChange={(event) =>
+            setData({ ...data, priceNormal: Number(event.target.value) })
+          }
         />
         {data.priceOffer !== null && (
           <input
             type="number"
             defaultValue={data.priceOffer}
             placeholder="Offer price"
+            onChange={(event) =>
+              setData({ ...data, priceOffer: Number(event.target.value) })
+            }
           />
         )}
       </div>
