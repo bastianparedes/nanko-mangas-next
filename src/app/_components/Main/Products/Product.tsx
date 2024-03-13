@@ -17,13 +17,13 @@ const Price = ({
     );
   }
 
-  const discount = 100 - Math.round((100 * priceOffer) / priceNormal);
+  const discount = -(100 - Math.round((100 * priceOffer) / priceNormal));
   return (
     <>
       <div className="flex items-center gap-2">
         <span className="font-bold text-base">$ {formatPrice(priceOffer)}</span>
         <span className="text-white py-0.5 px-1 bg-red-400 rounded text-xs">
-          -{discount}%
+          {discount}%
         </span>
       </div>
       <span className="line-through text-gray-400 text-sm">
