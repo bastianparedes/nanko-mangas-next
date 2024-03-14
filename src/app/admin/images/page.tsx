@@ -1,4 +1,4 @@
-import Images from './_components/Images';
+import ImageCards from './_components/ImageCards';
 import { serverClient } from '../../../../modules/trpc/serverClient';
 
 const Page = async () => {
@@ -6,7 +6,7 @@ const Page = async () => {
     columns: ['descriptiveName', 'id', 'storedName', 'url']
   });
 
-  return <Images initialImages={images} />;
+  return <ImageCards initialImages={images} />;
 };
 
 export default Page;
