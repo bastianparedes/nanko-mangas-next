@@ -12,7 +12,7 @@ const Component = () => {
   };
 
   return (
-    <div className="flex bg-orange-400 p-4">
+    <div className="flex bg-orange-400 p-4 text-white">
       <div className="flex items-center gap-5 grow content-start">
         <a
           href={path.join(nextConfig.basePath, '/admin/products')}
