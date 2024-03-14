@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const authOptions = {
+const handler = NextAuth({
   callbacks: {
     async redirect() {
       return '/admin';
@@ -26,9 +26,11 @@ const authOptions = {
         return null;
       }
     })
-  ]
-};
+  ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 60 // 30 minutes
+  }
+});
 
-const handler = NextAuth(authOptions);
-
-export { authOptions, handler as GET, handler as POST };
+export { handler as GET, handler as POST };
