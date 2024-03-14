@@ -37,7 +37,7 @@ const Component = ({ initialProducts, images }: Props) => {
 
   const createProduct = () => {
     insertProduct.mutate({
-      name: 'New manga',
+      name: '',
       priceNormal: 0,
       priceOffer: null,
       visible: false,

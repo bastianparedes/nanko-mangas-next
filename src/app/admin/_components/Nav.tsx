@@ -18,18 +18,18 @@ const Component = () => {
           href={path.join(nextConfig.basePath, '/admin/products')}
           className="p-3 bg-slate-500"
         >
-          Admin products
+          Ver productos
         </a>
         <a
           className="p-3 bg-slate-500"
           href={path.join(nextConfig.basePath, '/admin/images')}
         >
-          Admin images
+          Ver imágenes
         </a>
       </div>
       <div className="flex items-center grow justify-end">
         <button onClick={logout} className="p-3 bg-slate-500">
-          End session
+          Cerrar sesión
         </button>
       </div>
     </div>

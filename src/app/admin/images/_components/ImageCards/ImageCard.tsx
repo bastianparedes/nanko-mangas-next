@@ -47,7 +47,7 @@ const Component = ({ initialData }: Props) => {
             type="text"
             className="border-black border-2 p-1"
             value={data.descriptiveName}
-            placeholder="Name"
+            placeholder="Nombre"
             onChange={(event) =>
               setData({ ...data, descriptiveName: event.target.value })
             }
@@ -62,7 +62,7 @@ const Component = ({ initialData }: Props) => {
                 })
               }
             >
-              Save
+              Guardar
             </button>
             <button
               className="p-2 bg-red-400 rounded-lg"
@@ -74,7 +74,7 @@ const Component = ({ initialData }: Props) => {
                 deleteImage.mutate({ id: data.id });
               }}
             >
-              Delete
+              Borrar
             </button>
           </div>
         </div>

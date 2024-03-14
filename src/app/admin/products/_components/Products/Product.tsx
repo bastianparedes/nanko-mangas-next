@@ -54,6 +54,7 @@ const Component = ({ initialData, images }: Props) => {
           </div>
           <Select
             instanceId="Select"
+            placeholder="Imagen"
             options={[
               {
                 value: null,
@@ -80,7 +81,7 @@ const Component = ({ initialData, images }: Props) => {
             type="text"
             className="border-black border-2 p-1"
             value={data.name}
-            placeholder="Name"
+            placeholder="Nombre"
             onChange={(event) => setData({ ...data, name: event.target.value })}
           />
           <div className="flex flex-col">
@@ -95,7 +96,7 @@ const Component = ({ initialData, images }: Props) => {
                   })
                 }
               />
-              <span>Show offer price</span>
+              <span>Mostrar precio oferta</span>
             </div>
             {data.priceOffer !== null && (
               <input
@@ -114,7 +115,7 @@ const Component = ({ initialData, images }: Props) => {
           </div>
           <input
             type="number"
-            className="border-black border-2 p-1"
+            className="border-black border-2 p-1 mt-5"
             value={data.priceNormal}
             placeholder="Normal price"
             onChange={(event) =>
@@ -140,7 +141,7 @@ const Component = ({ initialData, images }: Props) => {
                 })
               }
             >
-              Save
+              Guardar
             </button>
             <button
               className="p-2 bg-red-400 rounded-lg"
@@ -153,7 +154,7 @@ const Component = ({ initialData, images }: Props) => {
                 setIsDeleted(true);
               }}
             >
-              Delete
+              Borrar
             </button>
           </div>
         </div>

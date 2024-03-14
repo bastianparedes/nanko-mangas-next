@@ -28,7 +28,7 @@ const Component = ({ initialImages }: Props) => {
     const trimedDescriptiveName = newImage.descriptiveName.trim();
 
     if (trimedDescriptiveName === '' || newImage.file === null) {
-      alert('Please fill out all fields.');
+      alert('Debes poner un nombre y una imagen');
       return;
     }
 
@@ -72,7 +72,7 @@ const Component = ({ initialImages }: Props) => {
                 htmlFor="name"
                 className="block text-gray-700 font-bold mb-2"
               >
-                Name:
+                Nombre:
               </label>
               <input
                 type="text"
@@ -95,7 +95,7 @@ const Component = ({ initialImages }: Props) => {
                 htmlFor="image"
                 className="block text-gray-700 font-bold mb-2"
               >
-                Image:
+                Imagen:
               </label>
               <input
                 type="file"
@@ -119,12 +119,15 @@ const Component = ({ initialImages }: Props) => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Submit
-            </button>
+            {newImage.descriptiveName.trim() !== '' &&
+              newImage.file !== null && (
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Guardar imagen
+                </button>
+              )}
           </form>
         </div>
         {images.map((image) => (
