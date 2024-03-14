@@ -40,6 +40,7 @@ const Component = ({ initialImages }: Props) => {
     })
       .then((response) => response.json())
       .then((json) => {
+        setNewImage({ file: null, descriptiveName: '' });
         setImages((previousState) => [
           {
             descriptiveName: json.descriptiveName,
@@ -49,7 +50,7 @@ const Component = ({ initialImages }: Props) => {
           },
           ...previousState
         ]);
-        alert(json.success ? 'Proccess succeded' : 'Process failed');
+        location.reload();
       })
       .catch((error) => {
         console.error('Error sending data:', error);

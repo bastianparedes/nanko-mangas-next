@@ -17,7 +17,13 @@ const Component = ({ initialData }: Props) => {
   const [data, setData] = useState(initialData);
   const [isDeleted, setIsDeleted] = useState(false);
   const updateImage = trpcClient.updateImage.useMutation();
-  const deleteProduct = trpcClient.deleteProduct.useMutation();
+  const deleteImage = trpcClient.deleteImage.useMutation({
+    onSettled(dataMutation, error) {
+      if (error !== null || dataMutation === undefined)
+        return alert(`There was a problem deleting ${data.descriptiveName}`);
+      setIsDeleted(true);
+    }
+  });
 
   return (
     <div
@@ -57,13 +63,12 @@ const Component = ({ initialData }: Props) => {
           </button>
           <button
             className="p-2 bg-red-400 rounded-lg"
-            onClick={() => {
+            onClick={async () => {
               const confirm = window.confirm(
                 `Are you shure you want to delete ${data.descriptiveName}?`
               );
               if (!confirm) return;
-              deleteProduct.mutate({ id: data.id });
-              setIsDeleted(true);
+              deleteImage.mutate({ id: data.id });
             }}
           >
             Delete

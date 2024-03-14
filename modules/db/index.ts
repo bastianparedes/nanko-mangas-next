@@ -54,7 +54,6 @@ const insertImage = async (values: { descriptiveName: string; file: File }) => {
           .returning()
       )[0];
     } catch (_error) {
-      // console.log('ERROR AL SUBIR ARCHIVO', _error);
       tx.rollback();
     }
   });
@@ -178,26 +177,23 @@ const updateProduct = async (
 const deleteImage = async (id: number) => {
   return await db.transaction(async (tx) => {
     try {
-      const imageIsUsed =
-        (await tx.query.Product.findFirst({
-          where: eq(schema.Product.idImage, id)
-        })) !== null;
-      if (imageIsUsed) return;
-
-      const image = await tx.query.Image.findFirst({
-        columns: {
-          storedName: true
-        }
+      const productWithThisImage = await tx.query.Product.findFirst({
+        where: eq(schema.Product.idImage, id)
       });
-      if (image === undefined) return;
+      const imageIsUsed = productWithThisImage !== undefined;
+      if (imageIsUsed) return;
 
       const imageFull = await tx
         .delete(schema.Image)
         .where(eq(schema.Image.id, id))
         .returning();
 
+      if (imageFull[0] === undefined) return;
+
       await fileSystem.filesDeleteV2({
-        path: path.join('/images', image.storedName).replaceAll('\\', '/')
+        path: path
+          .join('/images', imageFull[0].storedName)
+          .replaceAll('\\', '/')
       });
 
       return imageFull;
