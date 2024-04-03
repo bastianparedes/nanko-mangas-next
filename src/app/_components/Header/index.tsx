@@ -10,9 +10,11 @@ import { useState } from 'react';
 
 const Component = () => {
   const [showOptions, setShowOptions] = useState(false);
+  const scrollDirection = useScrollDirection();
+
   const switchShowOptions = () =>
     setShowOptions((previousState) => !previousState);
-  const scrollDirection = useScrollDirection();
+  const closeOptions = () => setShowOptions(false);
   const showHeader = scrollDirection === 'up';
 
   return (
@@ -23,6 +25,11 @@ const Component = () => {
         transition: 'all .25s linear'
       }}
     >
+      {showOptions && (
+        <style type="text/css">{`body {
+            overflow: hidden;
+          }`}</style>
+      )}
       <div className="w-full h-full flex items-center">
         <div className="aspect-square h-full flex justify-center items-center">
           <div className="aspect-square h-full flex justify-center items-center">
@@ -46,14 +53,15 @@ const Component = () => {
             }}
           >
             {/* {showOptions && <style>{"body {overflow: hidden}"}</style>} */}
-            <Button href={'#' + ids.hero} onClick={switchShowOptions}>
+            <Button href={'/admin'}>Admin</Button>
+            <Button href={'#' + ids.hero} onClick={closeOptions}>
               Inicio
             </Button>
-            {/* <Button href={"#" + ids.about} onClick={switchShowOptions}>Acerca de mí</Button> */}
-            <Button href={'#' + ids.contact} onClick={switchShowOptions}>
+            {/* <Button href={"#" + ids.about} onClick={closeOptions}>Acerca de mí</Button> */}
+            <Button href={'#' + ids.contact} onClick={closeOptions}>
               ¿Cómo comprar?
             </Button>
-            <Button href={'#' + ids.products} onClick={switchShowOptions}>
+            <Button href={'#' + ids.products} onClick={closeOptions}>
               Mangas disponibles
             </Button>
           </ul>
