@@ -1,24 +1,20 @@
-CREATE TABLE IF NOT EXISTS "Image" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"descriptiveName" varchar NOT NULL,
-	"storedName" varchar NOT NULL,
-	"url" varchar NOT NULL,
-	CONSTRAINT "Image_id_unique" UNIQUE("id"),
-	CONSTRAINT "Image_storedName_unique" UNIQUE("storedName")
+CREATE TABLE `Image` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`descriptiveName` text NOT NULL,
+	`storedName` text NOT NULL,
+	`url` text NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Product" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar NOT NULL,
-	"priceNormal" integer NOT NULL,
-	"priceOffer" integer,
-	"visible" boolean NOT NULL,
-	"idImage" integer,
-	CONSTRAINT "Product_id_unique" UNIQUE("id")
+CREATE TABLE `Product` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`priceNormal` integer NOT NULL,
+	`priceOffer` integer,
+	`visible` integer NOT NULL,
+	`idImage` integer,
+	FOREIGN KEY (`idImage`) REFERENCES `Image`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "Product" ADD CONSTRAINT "Product_idImage_Image_id_fk" FOREIGN KEY ("idImage") REFERENCES "Image"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+CREATE UNIQUE INDEX `Image_id_unique` ON `Image` (`id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `Image_storedName_unique` ON `Image` (`storedName`);--> statement-breakpoint
+CREATE UNIQUE INDEX `Product_id_unique` ON `Product` (`id`);

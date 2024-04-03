@@ -1,5 +1,5 @@
 # Nanko mangas
-Store created using NextJS 14, tRPC, Postgres and Dropbox API
+Store created using NextJS 14, tRPC, SQLite and Dropbox API
 
 ### Environment variables
 Variable | Mandatory | Description
@@ -14,7 +14,8 @@ ADMIN_PASSWORD | Yes | Password no hashed for admin
 NEXTAUTH_SECRET | Yes | Password for JWT
 NEXTAUTH_URL | Yes | Domain
 --- | --- | ---
-DATABASE_URL | Yes | URI for postgres
+DATABASE_URL | Yes | URI for Turso
+DATABASE_TOKEN | Yes | Token for Turso
 --- | --- | ---
 DROPBOX_APP_KEY | Yes | Dropbox ap key from app
 DROPBOX_APP_SECRET | Yes | Dropbox ap secret from app

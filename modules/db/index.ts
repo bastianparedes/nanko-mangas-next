@@ -1,16 +1,16 @@
-import { desc, and, eq, gte, ilike, lte, or, isNotNull } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import { desc, and, eq, gte, like, lte, or, isNotNull } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/libsql';
+import { createClient } from '@libsql/client';
 import fileSystem from '../fileSystem';
 import path from 'path';
 import sharp from 'sharp';
 import { filterObject } from '../../src/utils/object';
 import * as schema from './schema';
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL
+const client = createClient({
+  authToken: process.env.DATABASE_TOKEN,
+  url: process.env.DATABASE_URL ?? ''
 });
-client.connect();
 const db = drizzle(client, { schema });
 
 const insertImage = async (values: { descriptiveName: string; file: File }) => {
@@ -124,9 +124,11 @@ const getProducts = async (
     .where(
       and(
         !config.includeNoVisible ? eq(schema.Product.visible, true) : undefined,
-        ilike(
+        like(
           schema.Product.name,
-          '%' + config.filterByName.trim().split('').join('%') + '%'
+          '%' +
+            config.filterByName.trim().toLowerCase().split('').join('%') +
+            '%'
         ),
         config.minPrice !== null
           ? or(
