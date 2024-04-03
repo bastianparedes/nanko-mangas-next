@@ -12,7 +12,7 @@ const handler = NextAuth({
       name: 'Credentials',
       credentials: {
         username: { label: 'Usuario', type: 'text', placeholder: 'admin' },
-        password: { label: 'Contraseña', type: 'password', placeholder: '132' }
+        password: { label: 'Contraseña', type: 'password', placeholder: '123' }
       },
       async authorize(credentials, _req) {
         if (
